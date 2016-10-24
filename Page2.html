@@ -4,6 +4,8 @@
       table, td{ border: 1px solid black; }
       td{ padding:15px; }
    </style>
+
+   <script type="text/javascript" src="js/parser.js" ></script>
 </head>
 <body>
 
@@ -14,7 +16,7 @@
 <table>
    <tr>
       <td><p>Add Course:</p>
-      <input type="text" ><input type="submit" value="Add"></td>
+      <input type="text" id="singleInput"><input type="submit" value="Add" onclick="addClasses()"></td>
       <td><p>Paste Course History:</p>
       <input type="text" ><input type="submit" name="Submit"></td>
    </tr>
@@ -47,6 +49,11 @@
    </td>
    </tr>
 </table>
+
+<h4>All courses</h4>
+    <div>
+        <p id="allCourses"></p>
+    </div>
 
 </body>
 </html>
