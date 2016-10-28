@@ -20,7 +20,7 @@ function printClasses() {
     for(i = 0; i < coreClasses.length; i++) {
         text += "<div id=\"" + coreClasses[i] + "\">" + coreClasses[i] + "<br></div>";
     }
-    document.getElementById("allCourses").innerHTML = text;
+    document.getElementById("takenCourses").innerHTML = text;
     //document.getElementById("allCourses").appendChild(document.createTextNode(text));
     //appendChild(document.createTextNode(unsafe_str));
 };
@@ -47,7 +47,7 @@ function addClass(className) {
     var str = sanitize(className);
     
     //don't add multiple of the same
-    if(!arrayIncludes(takenClasses, className)) {
+    if(arrayIncludes(str, takenClasses)) {
         console.log("already added");
         console.log(takenClasses);
         return;
