@@ -12,8 +12,6 @@ displayed.
 -->
 <?php
 
-
-
   function debug_to_console($message){
     echo "<script>";
     echo "console.log(\"$message\")";
@@ -36,7 +34,7 @@ displayed.
               $u_hash = strtok($line, " ");
               $p_hash = strtok(" ");
               //array_push($user_array, $u_hash, $p_hash);
-              $user_array[$u_hash] = $p_hash;
+              $user_array[$u_hash] = rtrim($p_hash);
             }
         }
         fclose($handle);
@@ -44,6 +42,14 @@ displayed.
         echo "Error Opening User File!";
     }
     return $user_array;
+  }
+
+  function passwords_match($password_input, $user_password_hash){
+    $input_hash = md5($password_input);
+    if($user_password_hash === $input_hash){
+      return true;
+    }
+    return false;
   }
 
   function is_previous_user($username, $previous_users){
@@ -75,14 +81,16 @@ displayed.
         login_link();
       }
       elseif(is_previous_user($username_input, $user_array)){
+        $user_key = sha1($username_input);
         echo "<h3>Welcome user #";
         echo $username_input;
         echo "</h3><br>";
         echo "<form action='auth.php' method='post'>";
-        echo "<h4>Please enter your password to view stored data:</h4><br>";
-        echo "<input type='text' name='e_password'><br>";
+        echo "<input type='hidden' value='$user_key' name='user_key'/>";
+        echo "<h4>Please enter your password to view stored data:</h4>";
+        echo "<input type='password' name='password'/><br>";
         echo "<input type='submit' value='Submit'>";
-        echo "</form>";
+        echo "</form><br>";
         echo "Not you? ";
         login_link();
       }
@@ -93,13 +101,22 @@ displayed.
     }
     //END RESPONSE CASE 1
     //RESPONSE CASE 2: Password authentication
-    elseif(isset($_POST['e_password'])){
+    elseif(isset($_POST['password'])){
       debug_to_console("PASSWORD AUTHENTICATION");
 
+      $input_hash = md5($_POST['password']);
+      $correct_hash = $user_array[$_POST['user_key']];
+
+      if($input_hash == $correct_hash){
+        echo "Success!";
+      }
+      else{
+        echo "Failure!";
+      }
     }
     //END RESPONSE CASE 2
     //RESPONSE CASE 3: New user password creation.
-    elseif(isset($_POST['n_password'])){
+    elseif(isset($_POST['new_password'])){
       debug_to_console("PASSWORD CREATION");
     }
     //END RESPONSE CASE 3
