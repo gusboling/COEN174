@@ -2,7 +2,6 @@
 <html>
 <head>
 </head>
-<body>
 
 <!--
 PHP block chooses/displays appropriate login procedure based on user type.
@@ -12,6 +11,13 @@ entering an invalid student ID will be returned to the login, with an error mess
 displayed.
 -->
 <?php
+
+  function debug_to_console($message){
+    echo "<script>";
+    echo "console.log(\"$message\")";
+    echo "</script>";
+  }
+
   function load_users($source_file){
     $user_array = array();
 
@@ -23,7 +29,8 @@ displayed.
             else {
               $u_hash = strtok($line, " ");
               $p_hash = strtok(" ");
-              array_push($user_array, $u_hash, $p_hash);
+              //array_push($user_array, $u_hash, $p_hash);
+              $user_array[$u_hash] = $p_hash;
             }
         }
         fclose($handle);
@@ -33,8 +40,24 @@ displayed.
     return $user_array;
   }
 
-  echo "<script>console.log('PHP Working.')</script>";
-  $previous_users = load_users("data/users.txt");
+  function auth_handler(){
+    $username = $_POST['ID'];
+    $username_hash = sha1($username);
+    $previous_users = load_users("data/users.txt");
+
+    if(strlen($username) != 7){
+      echo "Error: Student ID Not 7 Digits Long!";
+      echo "<br><a href='index.html'>Return to Login</a>";
+    }
+    elseif(array_key_exists($username_hash, $previous_users)){
+      echo "<form action='auth.php' method='post'><input type='text' name='password'><input type='submit'></form>";
+    }
+    else{
+      echo "Welcome New User!";
+    }
+  }
+
+  debug_to_console("PHP Initialized.");
+  auth_handler();
 ?>
-</body>
 </html>
