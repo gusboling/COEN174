@@ -1,3 +1,7 @@
+// @file parser.js
+// @author Matthew Koken <mkoken@scu.edu>
+// Functions for parsing, tracking classes and requirements
+
 //break up the classes for checking?
 var coenClasses = [];
 var coreClasses = [];
@@ -5,26 +9,34 @@ var coreClasses = [];
 //or just go and check each individually
 var takenClasses = [];
 
-String.prototype.contains = function(it) { return this.indexOf(it) != -1; };
-
+// Sanitize a string for safe processing
 function sanitize(str) {
     //sanitize the String
     return str;
 }
 
-function printClasses() {
+// Save user data
+function save() {
+    return true; //should save the user data to server
+}
+
+// Print taken classes to table
+function printTakenClasses() {
     text = "";
     for(i = 0; i < coenClasses.length; i++) {
-        text += "<div id=\"" + coenClasses[i] + "\">" + coenClasses[i] + "<br></div>";
+        text += "<div id=\"" + coenClasses[i] + "\">" + coenClasses[i] + "&nbsp;&nbsp;&nbsp;&nbsp;" 
+        + " " + "<input id='" + coenClasses[i] + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/><br></div>";
     }
     for(i = 0; i < coreClasses.length; i++) {
-        text += "<div id=\"" + coreClasses[i] + "\">" + coreClasses[i] + "<br></div>";
+        text += "<div id=\"" + coreClasses[i] + "\">" + coreClasses[i] + "&nbsp;&nbsp;&nbsp;&nbsp;"
+        + " " + "<input id='" + coreClasses[i] + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/><br></div>";
     }
     document.getElementById("takenCourses").innerHTML = text;
     //document.getElementById("allCourses").appendChild(document.createTextNode(text));
     //appendChild(document.createTextNode(unsafe_str));
 };
 
+// Add multiple classes at once - copy paste from eCampus
 function addClasses() {
     //should sanitize input before handling
     var classNames = document.getElementById("singleInput").value;
@@ -52,18 +64,38 @@ function addClasses() {
         console.log("Adding");
         addClass(matches[idx]);
     }
+
+    //clear the input box after submit
     document.getElementById("singleInput").value="";
+
+    //save user data
+    save()
 }
 
+// Remove a taken class
 function removeClass(className) {
+    var toRemove = className;
     
+    var index = coenClasses.indexOf(className);
+    if (index > -1) {
+        coenClasses.splice(index, 1);
+    }
 
+    index = coreClasses.indexOf(className);
+    if (index > -1) {
+        coreClasses.splice(index, 1);
+    }
+
+    index = takenClasses.indexOf(className);
+    if (index > -1) {
+        takenClasses.splice(index, 1);
+    }
+
+    printClasses();
+    save();
 }
 
-function arrayIncludes(value, array) {
-    return array.indexOf(value) > -1;
-}
-
+// Add a single class
 function addClass(className) {
     var str = sanitize(className);
     
@@ -74,6 +106,7 @@ function addClass(className) {
         return;
     }
     
+    //add to the appropriate array. TODO: cleanup, consolidate arrays
     if(str.includes("coen") || str.includes("COEN")) {
         coenClasses.push(str.toUpperCase());
     } else {
