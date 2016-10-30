@@ -40,27 +40,64 @@ displayed.
     return $user_array;
   }
 
-  function auth_handler(){
-    $username = $_POST['ID'];
+  function is_previous_user($username){
     $username_hash = sha1($username);
     $previous_users = load_users("data/users.txt");
-
-    if(strlen($username) != 7){
-      echo "Error: Student ID Not 7 Digits Long!";
-      echo "<br><a href='index.html'>Return to Login</a>";
+    if(array_key_exists($username_hash, $previous_users)){
+      return true;
     }
-    elseif(array_key_exists($username_hash, $previous_users)){
-      echo "<h3>Welcome user #";
-      echo $_POST['ID'];
-      echo "</h3>";
-      echo "<form action='auth.php' method='post'>Please enter your password.<br><input type='text' name='password'><br><input type='submit'></form>";
-    }
-    else{
-      echo "Welcome new user! Please create a password to access data in the future!";
-    }
+    else
+      return false;
   }
 
-  debug_to_console("PHP Initialized.");
+  function is_bad_username($username){
+    if(strlen($username) != 7){
+      return true;
+    }
+    if(!ctype_digit($username)){
+      return true;
+    }
+    return false;
+  }
+
+  function auth_handler(){
+    //RESPONSE CASE 1: Username authentication
+    if(isset($_POST['username'])){
+      $username_input = $_POST['username'];
+      if(is_bad_username($username_input)){
+        echo "<h3>Error: Bad Username</h3><br>";
+        echo "<a href='index.html'>Return to login page.</a>";
+      }
+      elseif(is_previous_user($username_input)){
+        echo "<h3>Welcome user #";
+        echo $username_input;
+        echo "</h3>";
+      }
+      else{
+        echo "<h3>Welcome new user!</h3>";
+      }
+    }
+    //END RESPONSE CASE 1
+    //RESPONSE CASE 2: Password authentication
+    elseif(isset($_POST['e_password'])){
+      echo "Nothing yet!";
+    }
+    //END RESPONSE CASE 2
+    //RESPONSE CASE 3: New user password creation.
+    elseif(isset($_POST['n_password'])){
+      echo "Nothing yet!";
+    }
+    //END RESPONSE CASE 3
+    //RESPONSE CASE 4: No valid $_POST values recieved (ERROR)
+    else {
+      echo "ERROR: No valid data recieved from client.";
+      echo "<a href='index.html'>Return to login page.</a>";
+    }
+    //END RESPONSE CASE 4
+
+  }
+
+  debug_to_console("PHP Running.");
   auth_handler();
 ?>
 </html>
