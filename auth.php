@@ -108,10 +108,11 @@ displayed.
       $correct_hash = $user_array[$_POST['user_key']];
 
       if($input_hash == $correct_hash){
-        echo "Success!";
+        readfile('Page2.html');
       }
       else{
-        echo "Failure!";
+        echo "<h3>Incorrect username or password!</h3>";
+        login_link();
       }
     }
     //END RESPONSE CASE 2
