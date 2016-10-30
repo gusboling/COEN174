@@ -1,3 +1,5 @@
-apples
-pears
-oranges
+# WORDS ARE SEPARATED BY SPACES. COMMENT-LINES ARE REPRESENTED BY '#'
+# FIRST WORD ON EACH LINE: SHA1 hash of username
+# SECOND WORD ON EACH LINE: MD5 hash of password
+# THE LINE BELOW IS A TEST ACCOUNT: the username is 'root' and the password is 'maples'.
+dc76e9f0c0006e8f919e0c515c66dbba3982f785 309f7112d863cd40b5d12477d036621a
