@@ -1,0 +1,48 @@
+<html>
+<head>
+   <style>
+      table, td{ border: 1px solid black; }
+      td{ padding:15px; }
+   </style>
+
+   <script type="text/javascript" src="js/requirements.js" ></script>
+   <script type="text/javascript" src="js/parser.js" ></script>
+</head>
+<body>
+
+<center><h1>Degree Progress Report</h1></center>
+
+<br />
+<h4>Update courses</h4>
+<table>
+   <tr>
+      <td><p>Add Course:</p>
+      <input type="text" id="singleInput"><input type="submit" value="Add" onclick="addClasses()"></td>
+      <td><p>Paste Course History:</p>
+      <input type="text" ><input type="submit" name="Submit"></td>
+   </tr>
+</table>
+
+<br />
+
+<h4>Courses/Requirements not Completed</h4>
+<table bgcolor="red">
+   <tr>
+      <td><p>COEN 122 - Computer Architecture</p>
+         <p>COEN 171 - Principles of Programming Languages</p>
+         <p>COEN 175 - Compilers</p>
+         <p>COEN 179 - Algorithms</p>
+      </td>
+   </tr>
+</table>
+
+<br />
+
+<h4>Courses Completed</h4>
+<table bgcolor="green">
+   <tr>
+      <td><p id="takenCourses"></p>
+   </td>
+   </tr>
+</table>
+</html>
