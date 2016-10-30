@@ -50,10 +50,13 @@ displayed.
       echo "<br><a href='index.html'>Return to Login</a>";
     }
     elseif(array_key_exists($username_hash, $previous_users)){
-      echo "<form action='auth.php' method='post'><input type='text' name='password'><input type='submit'></form>";
+      echo "<h3>Welcome user #";
+      echo $_POST['ID'];
+      echo "</h3>";
+      echo "<form action='auth.php' method='post'>Please enter your password.<br><input type='text' name='password'><br><input type='submit'></form>";
     }
     else{
-      echo "Welcome New User!";
+      echo "Welcome new user! Please create a password to access data in the future!";
     }
   }
 
