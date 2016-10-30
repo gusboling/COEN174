@@ -28,11 +28,31 @@ function printClasses() {
 function addClasses() {
     //should sanitize input before handling
     var classNames = document.getElementById("singleInput").value;
-    if(checkAddOneOrMany()) {
-
-    } else {
-        addClass(classNames);
+    console.log(classNames);
+    var matches = [];
+    // Match regex for a class: 4 char code + digits (and possibly another char)
+    var regex = /\b[a-zA-Z]{4}\s\d{1,3}[A-Z]*\b/;
+    var match = regex.exec(classNames);
+    console.log("matched");
+    console.log(match);
+    
+    // get every class match
+    while (match != null) {
+        matches.push(match[0]);
+        classNames = classNames.substring(match.index + match[0].length);
+        match = regex.exec(classNames);
     }
+    
+    // DEBUG
+    //console.log(match);
+    //console.log(matches);
+
+    // add each each class
+    for(var idx = 0; idx < matches.length; idx++) {
+        console.log("Adding");
+        addClass(matches[idx]);
+    }
+    document.getElementById("singleInput").value="";
 }
 
 function removeClass() {
@@ -66,5 +86,8 @@ function addClass(className) {
 
 //true if add many, false if add one
 function checkAddOneOrMany(classes) {
+    var str = classes;
+    if(str.includes('\n'))
+        return true;
     return false;
 }

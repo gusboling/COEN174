@@ -42,3 +42,7 @@ var math_classes = [
 var core_classes = [
 
 ];
+
+var clas_codes = [
+    "AMTH", "COEN", "MATH", "PHYS", "CHEM"
+];
