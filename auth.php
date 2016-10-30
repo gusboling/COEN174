@@ -68,6 +68,7 @@ displayed.
   function auth_handler($user_array){
     //RESPONSE CASE 1: Username authentication
     if(isset($_POST['username'])){
+      debug_to_console("RESPONDING TO USERNAME");
       $username_input = $_POST['username'];
       if(is_bad_username($username_input)){
         echo "<h3>Error: Bad Username</h3><br>";
@@ -82,15 +83,19 @@ displayed.
         echo "<input type='text' name='e_password'><br>";
         echo "<input type='submit' value='Submit'>";
         echo "</form>";
+        echo "Not you? ";
+        login_link();
       }
       else{
         echo "<h3>Welcome new user!</h3>";
+        login_link();
       }
     }
     //END RESPONSE CASE 1
     //RESPONSE CASE 2: Password authentication
     elseif(isset($_POST['e_password'])){
       debug_to_console("PASSWORD AUTHENTICATION");
+
     }
     //END RESPONSE CASE 2
     //RESPONSE CASE 3: New user password creation.
