@@ -1,7 +1,7 @@
 <html>
   <head>
-    <script type='text/javascript' href="js/requirements.js"/>
-    <script type='text/javascript' href="js/parser.js"/>
+    <script type='text/javascript' href="js/requirements.js"></script>
+    <script type='text/javascript' href="js/parser.js"></script>
   </head>
   <body>
     <center><h1>SCU Online Degree Progress Report</h1></center>
@@ -17,9 +17,9 @@
        <br />
        <li>Paste your Course History into the box below:<br /></li>
     </ol>
-    <form action='addClasses()' method='post'>
-       <input type="text" name="raw_data">
-       <input type="submit" name="Submit">
+    <form action="Page2.html" method='post'>
+       <input type="text" name="raw_data" id="singleInput">
+       <input type="submit" name="Submit" onclick="addClasses()">
     </form>
   </body>
 </html>
