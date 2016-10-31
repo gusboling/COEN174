@@ -66,6 +66,12 @@
   ?>
 
   <?php
+<<<<<<< HEAD
+    if(isset($_POST['data'])){
+      debug_to_console("Data Recieved!");
+      $raw_data = $_POST['data'];
+      $class_data = parse($raw_data);
+=======
     if(isset($_POST['read'])){
       $user_key = $_POST['user_hash'];
       $user_classes = read_cff($user_key);
@@ -81,6 +87,7 @@
       $user_classes = parse($_POST['data']);
       $write_status = write_ctf($user_key, $user_classes);
       echo $write_status;
+>>>>>>> master
     }
     else{
       debug_to_console("No Data Recieved!");
@@ -92,7 +99,10 @@
       $writeResult = write_ctf($test_key ,$result_array);
       echo jstring($result_array);
       */
+<<<<<<< HEAD
+=======
       echo "Hello World!";
+>>>>>>> master
     }
   ?>
 </html>
