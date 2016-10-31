@@ -46,7 +46,7 @@ displayed.
 
 <?php //auth_handler function
   function auth_handler(){
-    $user_array = load_users("data/users.txt");
+    $user_array = load_users("data/up_hashes.txt");
 
     //RESPONSE CASE 1: Username authentication
     if(isset($_POST['username'])){
@@ -99,7 +99,7 @@ displayed.
       $password_hash = md5($_POST['new_password']); //password converted to MD5 form.
 
       $user_data_line = $username_hash . " " . $password_hash . "\n";
-      $userFile = "data/users.txt";
+      $userFile = "data/up_hashes.txt";
       $current = file_get_contents($userFile);
       $current .= $user_data_line;
       file_put_contents($userFile, $current);
@@ -110,7 +110,7 @@ displayed.
 
     //RESPONSE CASE 4: No valid $_POST parameters recieved (Error Case)
     else {
-      debug_to_console("STATUS: ERROR CASE - BAD NAVIGATION")
+      debug_to_console("STATUS: ERROR CASE - BAD NAVIGATION");
       echo "ERROR: No valid data recieved from client.";
       login_link();
     }
