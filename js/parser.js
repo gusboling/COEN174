@@ -43,7 +43,15 @@ function load() {
     // grab hashname from cookie
     var hash = loadHash();
     // grab array from php
-    takenClasses = loadClasses(hash);
+    //takenClasses = loadClasses(hash);
+    $.ajax({
+        url: 'writeUser.php',
+        type: 'post',
+        data: {'user_hash': hash, 'read': 'true'},
+        success:function(msg) {
+            takenClasses = JSON.parse(msg);
+        }
+    })
     return true;
 }
 
@@ -371,9 +379,6 @@ function printRequirementsFulfilled() {
         resString += "<div id=\"" + fulfilledClasses[i].class + "\">" + fulfilledClasses[i].class 
         + "&nbsp;&nbsp;&nbsp;&nbsp;" + "<input id='" + fulfilledClasses[i].class + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/>" 
         + "&nbsp;&nbsp;&nbsp;&nbsp;" + selbox + "</br></div>";
-    }
-    for (var i = 0; i < takenClasses.length; i++) {
-        if()
     }
     document.getElementById("takenCourses").innerHTML = resString;
 }
