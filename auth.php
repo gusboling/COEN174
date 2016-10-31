@@ -13,14 +13,14 @@ displayed.
     echo "console.log(\"$message\")";
     echo "</script>";
   }
-  function login_link(){
-    echo "<a href='index.html'>Return to login page.</a><br>";
-  }
   function is_bad_username($username){
     if((strlen($username) != 7) or (!ctype_digit($username))){
       return true;
     }
     return false;
+  }
+  function login_link(){
+    echo "<a href='index.html'>Return to login page.</a><br>";
   }
   function load_users($source_file){
     $user_array = array();
@@ -47,32 +47,27 @@ displayed.
 <?php //auth_handler function
   function auth_handler(){
     $user_array = load_users("data/users.txt");
+
     //RESPONSE CASE 1: Username authentication
     if(isset($_POST['username'])){
-      debug_to_console("RESPONDING TO USERNAME");
+      debug_to_console("STATUS: RESPONDING TO USERNAME");
       $user_key = sha1($_POST['username']);
       if(is_bad_username($_POST['username'])){
         echo "<h3>Error: invalid username (longer than seven digits, or contains non-number characters)</h3><br>";
         login_link();
       }
       elseif(array_key_exists($user_key, $user_array)){
-        //$user_key = sha1($username_input);
         echo "<h3>Welcome user #";
         echo $_POST['username'];
         echo "</h3><br>";
-        echo "<form action='auth.php' method='post'>";
-        echo "<input type='hidden' value='$user_key' name='user_key'/>";
-        echo "<h4>Please enter your password to view stored data:</h4>";
-        echo "<input type='password' name='password'/><br>";
-        echo "<input type='submit' value='Submit'>";
-        echo "</form><br>";
+        echo "<form action='auth.php' method='post'><input type='hidden' value='$user_key' name='user_key'/><h4>Please enter your password to view stored data:</h4><input type='password' name='password'/><br><input type='submit' value='Submit'></form><br>";
+
         echo "Not you? ";
         login_link();
       }
       else{
         //$user_key = sha1($username_input);
-        echo "<h3>Welcome new user!</h3>";
-        echo "<p>Please enter a username to save your information for later!</p><br>";
+        echo "<h3>Welcome new user!</h3><p>Please enter a password to save your information for later!</p><br>";
         echo "<form action='auth.php' method='post'><input type='password' name='new_password'><br><input type='hidden' name='user_key' value=$user_key><input type='submit' value='Submit'></form>";
         login_link();
       }
@@ -81,7 +76,7 @@ displayed.
 
     //RESPONSE CASE 2: Password authentication
     elseif(isset($_POST['password'])){
-      debug_to_console("PASSWORD AUTHENTICATION");
+      debug_to_console("STATUS: PASSWORD AUTHENTICATION");
 
       $input_hash = md5($_POST['password']);
       $correct_hash = $user_array[$_POST['user_key']];
@@ -99,7 +94,7 @@ displayed.
 
     //RESPONSE CASE 3: New user password creation.
     elseif(isset($_POST['new_password'])){
-      debug_to_console("PASSWORD CREATION");
+      debug_to_console("STATUS: PASSWORD CREATION");
       $username_hash = $_POST['user_key']; //username should already be in SHA1 form.
       $password_hash = md5($_POST['new_password']); //password converted to MD5 form.
 
@@ -115,6 +110,7 @@ displayed.
 
     //RESPONSE CASE 4: No valid $_POST parameters recieved (Error Case)
     else {
+      debug_to_console("STATUS: ERROR CASE - BAD NAVIGATION")
       echo "ERROR: No valid data recieved from client.";
       login_link();
     }
