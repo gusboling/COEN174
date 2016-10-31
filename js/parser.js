@@ -91,7 +91,7 @@ function removeClass(className) {
         takenClasses.splice(index, 1);
     }
 
-    printClasses();
+    printTakenClasses();
     save();
 }
 
@@ -115,7 +115,7 @@ function addClass(className) {
 
     //should check if a class is actually a class
     takenClasses.push(str.toUpperCase());
-    printClasses();
+    printTakenClasses();
 }
 
 //true if add many, false if add one
