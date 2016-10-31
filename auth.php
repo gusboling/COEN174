@@ -13,24 +13,17 @@ displayed.
     echo "console.log(\"$message\")";
     echo "</script>";
   }
-
   function login_link(){
-    echo "<a href='index.html'>Return to login page.</a>";
+    echo "<a href='index.html'>Return to login page.</a><br>";
   }
-
   function is_bad_username($username){
-    if(strlen($username) != 7){
-      return true;
-    }
-    if(!ctype_digit($username)){
+    if((strlen($username) != 7) or (!ctype_digit($username))){
       return true;
     }
     return false;
   }
-
   function load_users($source_file){
     $user_array = array();
-
     $handle = fopen($source_file, "r") or die("Unable to open file!");
     if ($handle) {
         while (($line = fgets($handle)) !== false) {
