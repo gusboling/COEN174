@@ -53,7 +53,7 @@ function save() {
     $.ajax({
         url: 'writeUser.php',
         type: 'post',
-        data: {'hash': hash, 'write': 'true', 'data': jsonString},
+        data: {'user_hash': hash, 'write': 'true', 'data': jsonString},
         dataType: 'json',
         error: function(xhr) {
             console.log("An error saving occured: " + xhr.status + " " + xhr.statusText)
