@@ -48,7 +48,10 @@ function load() {
         url: 'writeUser.php',
         type: 'post',
         data: {'user_hash': hash, 'read': 'true'},
+        dataType: "json",
         success:function(msg) {
+            console.log("Loaded classes");
+            console.log(msg);
             takenClasses = JSON.parse(msg);
         }
     })
@@ -62,7 +65,10 @@ function save() {
         url: 'writeUser.php',
         type: 'post',
         data: {'user_hash': hash, 'write': 'true', 'data': jsonString},
-        dataType: 'json',
+        dataType: "json",
+        success: function(msg) {
+            console.log(msg);
+        },
         error: function(xhr) {
             console.log("An error saving occured: " + xhr.status + " " + xhr.statusText)
         }
