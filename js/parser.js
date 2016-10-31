@@ -5,6 +5,12 @@
 //break up the classes for checking?
 var coenClasses = [];
 var coreClasses = [];
+var fulfilledClasses = [];
+var unfulfilledClasses = [];
+var electives = [];
+var enrichment = [];
+var units = 0;
+var hash;
 
 //or just go and check each individually
 var takenClasses = [];
@@ -15,8 +21,45 @@ function sanitize(str) {
     return str;
 }
 
+window.onload = function(){
+    load();
+    requirementsCompare();
+    printRequirementsNeeded();
+    printRequirementsFulfilled();
+    printTakenClasses();
+};
+
+function loadHash(){
+    var ck = document.cookie;
+    var ca = ck.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            hash = c.substring(name.length, c.length);
+        }
+    }
+};
+
+function loadClasses(hash) {
+    return [];
+};
+
+function load() {
+    // grab hashname from cookie
+    var hash = loadHash();
+    // grab array from php
+    takenClasses = loadClasses(hash);
+    return true;
+}
+
 // Save user data
 function save() {
+    var jsonString = JSON.stringify(takenClasses);
+    
+
     return true; //should save the user data to server
 }
 
@@ -69,7 +112,7 @@ function addClasses() {
     document.getElementById("singleInput").value="";
 
     //save user data
-    save()
+    save();
 }
 
 // Remove a taken class
@@ -100,7 +143,7 @@ function addClass(className) {
     var str = sanitize(className);
     
     //don't add multiple of the same
-    if(arrayIncludes(str, takenClasses)) {
+    if(takenClasses!=null && arrayIncludes(str, takenClasses)) {
         console.log("already added");
         console.log(takenClasses);
         return;
@@ -124,4 +167,114 @@ function checkAddOneOrMany(classes) {
     if(str.includes('\n'))
         return true;
     return false;
+}
+
+function requirementsCompare() {
+    if(takenClasses == null)
+        return;
+
+    //check engineering classes
+    for(var i = 0; i < engr_classes.length; i++) {
+        var flag = false;
+        for(var j = 0; j < takenClasses.length; j++) {
+            if(takenClasses[j] == engr_classes[i].class){
+                fulfilledClasses.push(engr_classes[i]);
+                units += engr_classes[i].units;
+                flag = true;
+                break;
+            }
+        }
+        if(flag != true)
+            unfulfilledClasses.push(engr_classes[i]);
+    }
+
+    //check math requirements
+    for(var i = 0; i < math_classes.length-7; i++) {
+        var flag = false;
+        for(var j = 0; j < takenClasses.length; j++) {
+            if(takenClasses[j] == math_classes[i].class){
+                fulfilledClasses.push(math_classes[i]);
+                units += math_classes[i].units;
+                flag = true;
+                break;
+            }
+        }
+        if(flag != true)
+            unfulfilledClasses.push(math_classes[i]);
+    }
+    //check classes with alternates
+    var amth106 = takenClasses.indexOf("AMTH 106");
+    var math22 = takenClasses.indexOf("MATH 22");
+    if(amth106 > -1 || math22 > -1) {
+        if(amth106 > -1) {
+            fulfilledClasses.push(math_classes[12]);
+            units += 4;
+        }
+        if(math22 > -1) {
+            fulfilledClasses.push(takenClasses[13]);
+            units += 4;
+        }
+    }
+    var amth108 = takenClasses.indexOf("AMTH 108");
+    var math122 = takenClasses.indexOf("MATH 122");
+    if(amth108 > -1 || math122 > -1) {
+        if(amth108 > -1) {
+            fulfilledClasses.push(math_classes[14]);
+            units += 4;
+        }
+        if(math122 > -1) {
+            fulfilledClasses.push(takenClasses[15]);
+            units += 4;
+        }
+    } else {
+        fulfilledClasses.push(math_classes[14]);
+        fulfilledClasses.push(math_classes[15]);
+    }
+    var math53 = takenClasses.indexOf("MATH 53");
+    var math166 = takenClasses.indexOf("MATH 166");
+    var amth118 = takenClasses.indexOf("AMTH 118");
+    if(math53 > -1 || math166 > -1 || amth118) {
+        if(math53 > -1) {
+            fulfilledClasses.push(math_classes[16]);
+            units += 4;
+        }
+        if(math166 > -1) {
+            fulfilledClasses.push(takenClasses[17]);
+            units += 4;
+        }
+        if(amth118 > -1) {
+            fulfilledClasses.push(takenClasses[18]);
+        }
+    } else {
+        unfulfilledClasses.push(math_classes[16]);
+        unfulfilledClasses.push(math_classes[17]);
+        unfulfilledClasses.push(math_classes[18]);
+    }
+
+
+    //core[i].classes[]
+    for(var i = 0; i < core_classes.length; i++) {
+        for(var j = 0; j < core_classes[i].classes.length; j++) {
+            var flag = false;
+            for(var k = 0; k < takenClasses.length; k++) {
+                if(takenClasses[k] == core_classes[i].classes[j].class) {
+                    fulfilledClasses.push(core_classes[i].classes[j]);
+                    units += core_classes[i].classes[j].units;
+                    flag = true;
+                    break;
+                }
+            }
+            if(flag != true) {
+                unfulfilledClasses.push(core_classes[i].classes[j]);
+            }
+        }
+    }
+}
+
+function printRequirementsNeeded() {
+
+}
+
+function printRequirementsFulfilled() {
+    
 }
