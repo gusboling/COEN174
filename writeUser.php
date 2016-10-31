@@ -82,6 +82,7 @@
         echo "false";
       }
     }
+    
     elseif(isset($_POST['write'])){
       $user_key = $_POST['user_hash'];
       $user_classes = parse($_POST['data']);
