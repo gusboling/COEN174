@@ -49,18 +49,20 @@ function load() {
         type: 'post',
         data: {'user_hash': hash, 'read': 'true'},
         dataType: "json",
-        success:function(msg) {
+        success: function(msg) {
             console.log("Loaded classes");
             console.log(msg);
-            takenClasses = JSON.parse(msg);
+            //takenClasses = $.parseJSON(msg);
+            takenClasses = JSON.parse(JSON.stringify(msg));
         }
-    })
+    });
     return true;
 }
 
 // Save user data
 function save() {
     var jsonString = JSON.stringify(takenClasses);
+    console.log("Saving: " + jsonString);
     $.ajax({
         url: 'writeUser.php',
         type: 'post',
@@ -354,7 +356,7 @@ function addEnrichment(className) {
 function removeEnrichment(className) {
     var enIdx = enrichment.indexOf(className);
     if(enIdx > -1) {
-        enrichment.splice(elIdx, 1);
+        enrichment.splice(enIdx, 1);
     }
 }
 
@@ -366,8 +368,10 @@ function extraReq(val) {
         removeElective(className);
         removeEnrichment(className);
     } else if (value == 'elective') { //add elective
+        removeEnrichment(className)
         addElective(className);
     } else if (value == 'enrichment') { //add enrichment
+        removeElective(className);
         addEnrichment(className);
     }
 
