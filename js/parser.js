@@ -145,6 +145,8 @@ function removeClass(className) {
         takenClasses.splice(index, 1);
     }
 
+    removeElective(className);
+    removeEnrichment(className);
     //printTakenClasses();
     requirementsCompare();
     printRequirementsFulfilled();
@@ -370,14 +372,21 @@ function extraReq(val) {
 
 function printRequirementsFulfilled() {
     var resString = "";
-    for(var i = 0; i < fulfilledClasses.length; i++) {
-        var selbox = "<select id='" + fulfilledClasses[i].class + "_box' name='Elective or Enrichment?' onchange='extraReq(this.id)'>"
+    for(var i = 0; i < takenClasses.length; i++) {
+        var selectedEl = "";
+        if(electives.indexOf(takenClasses[i]) > -1)
+            selectedEl = "selected";
+
+        var selectedEn = "";
+        if(enrichment.indexOf(takenClasses[i]) > -1)
+            selectedEn = "selected";
+        var selbox = "<select id='" + takenClasses[i] + "_box' name='Elective or Enrichment?' onchange='extraReq(this.id)'>"
                     + "<option value='empty'></option>" 
-                    + "<option value='elective'>Elective</option>"
-                    + "<option value='enrichment'>Educational Enrichment</option>"
+                    + "<option value='elective' " + selectedEl + ">Elective</option>"
+                    + "<option value='enrichment' " + selectedEn + ">Educational Enrichment</option>"
                     + "<select>";
-        resString += "<div id=\"" + fulfilledClasses[i].class + "\">" + fulfilledClasses[i].class 
-        + "&nbsp;&nbsp;&nbsp;&nbsp;" + "<input id='" + fulfilledClasses[i].class + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/>" 
+        resString += "<div id=\"" + takenClasses[i] + "\">" + takenClasses[i] 
+        + "&nbsp;&nbsp;&nbsp;&nbsp;" + "<input id='" + takenClasses[i] + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/>" 
         + "&nbsp;&nbsp;&nbsp;&nbsp;" + selbox + "</br></div>";
     }
     document.getElementById("takenCourses").innerHTML = resString;
