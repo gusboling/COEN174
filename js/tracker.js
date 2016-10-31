@@ -18,6 +18,9 @@ function init() {
 
 function checkRequirements() {
     // TODO: check requirements based on classes
+
+	// Should have: verified courses: complete, incomplete
+	//			  : unverified courses: there, but can't tell what it fulfills
 };
 
 function checkCOEN(){
