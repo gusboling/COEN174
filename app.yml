@@ -1,0 +1,12 @@
+runtime: php55
+api_version: 1
+
+handlers :
+- url /index\.html
+    static_dir: /
+
+- url/
+    script: auth.php
+
+- url: /(.+\.php)$
+    script: \1
