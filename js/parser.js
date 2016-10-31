@@ -130,7 +130,7 @@ function addClasses() {
 function removeClass(className) {
     var toRemove = className;
     
-    var index = coenClasses.indexOf(className);
+    /*var index = coenClasses.indexOf(className);
     if (index > -1) {
         coenClasses.splice(index, 1);
     }
@@ -138,7 +138,7 @@ function removeClass(className) {
     index = coreClasses.indexOf(className);
     if (index > -1) {
         coreClasses.splice(index, 1);
-    }
+    }*/
 
     index = takenClasses.indexOf(className);
     if (index > -1) {
@@ -165,11 +165,11 @@ function addClass(className) {
     }
     
     //add to the appropriate array. TODO: cleanup, consolidate arrays
-    if(str.includes("coen") || str.includes("COEN")) {
+    /*if(str.includes("coen") || str.includes("COEN")) {
         coenClasses.push(str.toUpperCase());
     } else {
         coreClasses.push(str.toUpperCase());
-    }
+    }*/
 
     //should check if a class is actually a class
     takenClasses.push(str.toUpperCase());
