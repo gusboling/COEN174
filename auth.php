@@ -115,7 +115,7 @@ displayed.
       if($input_hash == $correct_hash){
         readfile('Page2.html');
       }
-      else{
+    else{
         echo "<h3>Incorrect username or password!</h3>";
         login_link();
       }
@@ -144,7 +144,6 @@ displayed.
     }
     //END RESPONSE CASE 4
   }
-
 
   //MAIN REQUEST HANDLING SEQUENCE
   $previous_users = load_users("data/users.txt");
