@@ -76,12 +76,13 @@ displayed.
     if(isset($_POST['username'])){
       debug_to_console("RESPONDING TO USERNAME");
       $username_input = $_POST['username'];
+      $user_key = sha1($username_input);
       if(is_bad_username($username_input)){
-        echo "<h3>Error: Bad Username</h3><br>";
+        echo "<h3>Error: invalid username (longer than seven digits, or contains non-number characters)</h3><br>";
         login_link();
       }
       elseif(is_previous_user($username_input, $user_array)){
-        $user_key = sha1($username_input);
+        //$user_key = sha1($username_input);
         echo "<h3>Welcome user #";
         echo $username_input;
         echo "</h3><br>";
@@ -95,11 +96,15 @@ displayed.
         login_link();
       }
       else{
+        //$user_key = sha1($username_input);
         echo "<h3>Welcome new user!</h3>";
+        echo "<p>Please enter a username to save your information for later!</p><br>";
+        echo "<form action='auth.php' method='post'><input type='password' name='new_password'><br><input type='hidden' name='user_key' value=$user_key><input type='submit' value='Submit'></form>";
         login_link();
       }
     }
     //END RESPONSE CASE 1
+
     //RESPONSE CASE 2: Password authentication
     elseif(isset($_POST['password'])){
       debug_to_console("PASSWORD AUTHENTICATION");
@@ -116,12 +121,23 @@ displayed.
       }
     }
     //END RESPONSE CASE 2
+
     //RESPONSE CASE 3: New user password creation.
     elseif(isset($_POST['new_password'])){
       debug_to_console("PASSWORD CREATION");
+      $username_hash = $_POST['user_key']; //username should already be in SHA1 form.
+      $password_hash = md5($_POST['new_password']); //password converted to MD5 form.
+
+      $user_data_line = $username_hash . " " . $password_hash . "\n";
+      $userFile = "data/users.txt";
+      $current = file_get_contents($userFile);
+      $current .= $user_data_line;
+      file_put_contents($userFile, $current);
+      readfile('Page1.html');
     }
     //END RESPONSE CASE 3
-    //RESPONSE CASE 4: No valid $_POST values recieved (ERROR)
+
+    //RESPONSE CASE 4: No valid $_POST parameters recieved (Error Case)
     else {
       echo "ERROR: No valid data recieved from client.";
       login_link();
