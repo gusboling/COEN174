@@ -30,17 +30,9 @@ window.onload = function(){
 };
 
 function loadHash(){
-    var ck = document.cookie;
-    var ca = ck.split(';');
-    for(var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            hash = c.substring(name.length, c.length);
-        }
-    }
+    var value = "; " + document.cookie;
+    var parts = value.split("; adapt_session=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
 };
 
 function loadClasses(hash) {
@@ -58,7 +50,15 @@ function load() {
 // Save user data
 function save() {
     var jsonString = JSON.stringify(takenClasses);
-    
+    $.ajax({
+        url: 'writeUser.php',
+        type: 'post',
+        data: {'hash': hash, 'write': 'true', 'data': jsonString},
+        dataType: 'json',
+        error: function(xhr) {
+            console.log("An error saving occured: " + xhr.status + " " + xhr.statusText)
+        }
+    });
 
     return true; //should save the user data to server
 }
@@ -83,13 +83,13 @@ function printTakenClasses() {
 function addClasses() {
     //should sanitize input before handling
     var classNames = document.getElementById("singleInput").value;
-    console.log(classNames);
+    //console.log(classNames);
     var matches = [];
     // Match regex for a class: 4 char code + digits (and possibly another char)
     var regex = /\b[a-zA-Z]{4}\s\d{1,3}[A-Z]*\b/;
     var match = regex.exec(classNames);
-    console.log("matched");
-    console.log(match);
+    //console.log("matched");
+    //console.log(match);
     
     // get every class match
     while (match != null) {
@@ -151,7 +151,6 @@ function addClass(className) {
     //don't add multiple of the same
     if(takenClasses!=null && arrayIncludes(str, takenClasses)) {
         console.log("already added");
-        console.log(takenClasses);
         return;
     }
     
@@ -276,7 +275,6 @@ function requirementsCompare() {
             }
         }
         if(flag != true) {
-            console.log(core_classes[i].core);
             unfulfilledClasses.push(core_classes[i].core);
         }
     }
@@ -296,7 +294,6 @@ function printRequirementsNeeded() {
 
 function printRequirementsFulfilled() {
     var resString = "";
-    console.log(fulfilledClasses);
     for(var i = 0; i < fulfilledClasses.length; i++) {
         resString += "<div id=\"" + fulfilledClasses[i].class + "\">" + fulfilledClasses[i].class 
         + "&nbsp;&nbsp;&nbsp;&nbsp;" + "<input id='" + fulfilledClasses[i].class + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/></div>";
