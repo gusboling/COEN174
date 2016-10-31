@@ -364,7 +364,7 @@ function extraReq(val) {
     var box = document.getElementById(val);
     var value = box.options[box.selectedIndex].value;
     var className = val.replace("_box","");
-    if(value == null || value == '' ) { //remove from enrichment,elective
+    if(value == null || value == '' || value == 'empty') { //remove from enrichment,elective
         removeElective(className);
         removeEnrichment(className);
     } else if (value == 'elective') { //add elective
