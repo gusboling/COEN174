@@ -112,6 +112,9 @@ function addClasses() {
     document.getElementById("singleInput").value="";
 
     //save user data
+    requirementsCompare();
+    printRequirementsFulfilled();
+    printRequirementsNeeded();
     save();
 }
 
@@ -134,7 +137,10 @@ function removeClass(className) {
         takenClasses.splice(index, 1);
     }
 
-    printTakenClasses();
+    //printTakenClasses();
+    requirementsCompare();
+    printRequirementsFulfilled();
+    printRequirementsNeeded()
     save();
 }
 
@@ -158,7 +164,7 @@ function addClass(className) {
 
     //should check if a class is actually a class
     takenClasses.push(str.toUpperCase());
-    printTakenClasses();
+    //printTakenClasses();
 }
 
 //true if add many, false if add one
@@ -172,6 +178,10 @@ function checkAddOneOrMany(classes) {
 function requirementsCompare() {
     if(takenClasses == null)
         return;
+
+    //reset classes
+    unfulfilledClasses = [];
+    fulfilledClasses = [];
 
     //check engineering classes
     for(var i = 0; i < engr_classes.length; i++) {
@@ -214,6 +224,8 @@ function requirementsCompare() {
             fulfilledClasses.push(takenClasses[13]);
             units += 4;
         }
+    } else {
+        unfulfilledClasses.push(math_classes[12]);
     }
     var amth108 = takenClasses.indexOf("AMTH 108");
     var math122 = takenClasses.indexOf("MATH 122");
@@ -227,13 +239,12 @@ function requirementsCompare() {
             units += 4;
         }
     } else {
-        fulfilledClasses.push(math_classes[14]);
-        fulfilledClasses.push(math_classes[15]);
+        unfulfilledClasses.push(math_classes[14]);
     }
     var math53 = takenClasses.indexOf("MATH 53");
     var math166 = takenClasses.indexOf("MATH 166");
     var amth118 = takenClasses.indexOf("AMTH 118");
-    if(math53 > -1 || math166 > -1 || amth118) {
+    if(math53 > -1 || math166 > -1 || amth118 > -1) {
         if(math53 > -1) {
             fulfilledClasses.push(math_classes[16]);
             units += 4;
@@ -244,18 +255,17 @@ function requirementsCompare() {
         }
         if(amth118 > -1) {
             fulfilledClasses.push(takenClasses[18]);
+            units += 4;
         }
     } else {
         unfulfilledClasses.push(math_classes[16]);
-        unfulfilledClasses.push(math_classes[17]);
-        unfulfilledClasses.push(math_classes[18]);
     }
 
 
     //core[i].classes[]
     for(var i = 0; i < core_classes.length; i++) {
+        var flag = false;
         for(var j = 0; j < core_classes[i].classes.length; j++) {
-            var flag = false;
             for(var k = 0; k < takenClasses.length; k++) {
                 if(takenClasses[k] == core_classes[i].classes[j].class) {
                     fulfilledClasses.push(core_classes[i].classes[j]);
@@ -264,17 +274,32 @@ function requirementsCompare() {
                     break;
                 }
             }
-            if(flag != true) {
-                unfulfilledClasses.push(core_classes[i].classes[j]);
-            }
+        }
+        if(flag != true) {
+            console.log(core_classes[i].core);
+            unfulfilledClasses.push(core_classes[i].core);
         }
     }
 }
 
 function printRequirementsNeeded() {
-
+    var resString = "";
+    for(var i = 0; i < unfulfilledClasses.length; i++) {
+        if (unfulfilledClasses[i].class != null) {
+            resString += "<div id=\"" + unfulfilledClasses[i].class + "\">" + unfulfilledClasses[i].class + "<br></div>";
+        } else {
+            resString += "<div id=\"" + unfulfilledClasses[i] + "\">" + unfulfilledClasses[i] + "<br></div>";
+        }
+    }
+    document.getElementById("unfulfilled").innerHTML = resString;
 }
 
 function printRequirementsFulfilled() {
-    
+    var resString = "";
+    console.log(fulfilledClasses);
+    for(var i = 0; i < fulfilledClasses.length; i++) {
+        resString += "<div id=\"" + fulfilledClasses[i].class + "\">" + fulfilledClasses[i].class 
+        + "&nbsp;&nbsp;&nbsp;&nbsp;" + "<input id='" + fulfilledClasses[i].class + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/></div>";
+    }
+    document.getElementById("takenCourses").innerHTML = resString;
 }
