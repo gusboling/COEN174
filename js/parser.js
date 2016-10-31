@@ -182,6 +182,11 @@ function requirementsCompare() {
     unfulfilledClasses = [];
     fulfilledClasses = [];
 
+    var checkedFlags = [];
+    for(var i = 0; i < takenClasses.length; i++) {
+        checkedFlags.push(0);
+    }
+
     //check engineering classes
     for(var i = 0; i < engr_classes.length; i++) {
         var flag = false;
@@ -289,14 +294,86 @@ function printRequirementsNeeded() {
             resString += "<div id=\"" + unfulfilledClasses[i] + "\">" + unfulfilledClasses[i] + "<br></div>";
         }
     }
+    //electives
+    if(electives.length < 3) {
+        resString += "<div id='elective_req'>Electives: " + electives.length + "/3 Classes<br></div>";
+    }
+
+    //educational enrichment
+    if(enrichment.length < 3) {
+        resString += "<div id='enrichment_req'>Enrichment: " + enrichment.length + "/4 Classes<br></div>";
+    }
+
+    //units
+    if(units < 191) {
+        resString += "<div id=\"units\">" + "Units: " + units + "/191" + "<br></div>";
+    }
+    
     document.getElementById("unfulfilled").innerHTML = resString;
+}
+
+function addElective(className) {
+    if(electives.indexOf(className) > -1) { //don't add the same again
+        return;
+    } else {
+        electives.push(className);
+    }
+}
+
+function removeElective(className) {
+    var elIdx = electives.indexOf(className);
+    if(elIdx > -1) {
+        electives.splice(elIdx, 1);
+    }
+}
+
+function addEnrichment(className) {
+    if(enrichment.indexOf(className) > -1) { //don't add the same again
+        return;
+    } else {
+        enrichment.push(className);
+    }
+}
+
+function removeEnrichment(className) {
+    var enIdx = enrichment.indexOf(className);
+    if(enIdx > -1) {
+        enrichment.splice(elIdx, 1);
+    }
+}
+
+function extraReq(val) {
+    var box = document.getElementById(val);
+    var value = box.options[box.selectedIndex].value;
+    var className = val.replace("_box","");
+    if(value == null || value == '' ) { //remove from enrichment,elective
+        removeElective(className);
+        removeEnrichment(className);
+    } else if (value == 'elective') { //add elective
+        addElective(className);
+    } else if (value == 'enrichment') { //add enrichment
+        addEnrichment(className);
+    }
+
+    printRequirementsFulfilled();
+    printRequirementsNeeded();
+    save();
 }
 
 function printRequirementsFulfilled() {
     var resString = "";
     for(var i = 0; i < fulfilledClasses.length; i++) {
+        var selbox = "<select id='" + fulfilledClasses[i].class + "_box' name='Elective or Enrichment?' onchange='extraReq(this.id)'>"
+                    + "<option value='empty'></option>" 
+                    + "<option value='elective'>Elective</option>"
+                    + "<option value='enrichment'>Educational Enrichment</option>"
+                    + "<select>";
         resString += "<div id=\"" + fulfilledClasses[i].class + "\">" + fulfilledClasses[i].class 
-        + "&nbsp;&nbsp;&nbsp;&nbsp;" + "<input id='" + fulfilledClasses[i].class + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/></div>";
+        + "&nbsp;&nbsp;&nbsp;&nbsp;" + "<input id='" + fulfilledClasses[i].class + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/>" 
+        + "&nbsp;&nbsp;&nbsp;&nbsp;" + selbox + "</br></div>";
+    }
+    for (var i = 0; i < takenClasses.length; i++) {
+        if()
     }
     document.getElementById("takenCourses").innerHTML = resString;
 }
