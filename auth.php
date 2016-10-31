@@ -113,9 +113,10 @@ displayed.
       $correct_hash = $user_array[$_POST['user_key']];
 
       if($input_hash == $correct_hash){
+        setcookie("adapt_session", $_POST['user_key'], time() + (86400 * 30), "/");
         readfile('Page2.html');
       }
-    else{
+      else{
         echo "<h3>Incorrect username or password!</h3>";
         login_link();
       }
@@ -133,6 +134,7 @@ displayed.
       $current = file_get_contents($userFile);
       $current .= $user_data_line;
       file_put_contents($userFile, $current);
+      setcookie("adapt_session", $_POST['user_key'], time() + (86400 * 30), "/");
       readfile('Page1.html');
     }
     //END RESPONSE CASE 3
