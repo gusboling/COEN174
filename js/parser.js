@@ -56,13 +56,14 @@ function load() {
             takenClasses = JSON.parse(JSON.stringify(msg));
         }
     });
-    return true;
+    //return true;
 }
 
 // Save user data
 function save() {
     var jsonString = JSON.stringify(takenClasses);
-    console.log("Saving: " + jsonString);
+    hash = loadHash();
+    console.log("Saving: " + hash + " - " + jsonString);
     $.ajax({
         url: 'writeUser.php',
         type: 'post',
@@ -76,7 +77,7 @@ function save() {
         }
     });
 
-    return true; //should save the user data to server
+    //return true; //should save the user data to server
 }
 
 // Print taken classes to table
