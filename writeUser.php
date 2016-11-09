@@ -76,8 +76,9 @@
       $user_key = $_POST['user_hash'];
       $user_classes = read_cff($user_key);
       if($user_classes !== false){
-        echo jstring($user_classes);
-        debug_to_console($_POST['user_hash']);
+        //echo jstring($user_classes);
+        echo json_encode($user_classes);
+        //debug_to_console($_POST['user_hash']);
       }
       else{
         echo "false";

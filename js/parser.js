@@ -43,24 +43,41 @@ function load() {
     // grab hashname from cookie
     var hash = loadHash();
     // grab array from php
-    takenClasses = loadClasses(hash);
-    return true;
+    //takenClasses = loadClasses(hash);
+    $.ajax({
+        url: 'writeUser.php',
+        type: 'post',
+        data: {'user_hash': hash, 'read': 'true'},
+        dataType: "json",
+        success: function(msg) {
+            console.log("Loaded classes");
+            console.log(msg);
+            //takenClasses = $.parseJSON(msg);
+            takenClasses = JSON.parse(JSON.stringify(msg));
+        }
+    });
+    //return true;
 }
 
 // Save user data
 function save() {
     var jsonString = JSON.stringify(takenClasses);
+    hash = loadHash();
+    console.log("Saving: " + hash + " - " + jsonString);
     $.ajax({
         url: 'writeUser.php',
         type: 'post',
         data: {'user_hash': hash, 'write': 'true', 'data': jsonString},
-        dataType: 'json',
+        dataType: "json",
+        success: function(msg) {
+            console.log(msg);
+        },
         error: function(xhr) {
             console.log("An error saving occured: " + xhr.status + " " + xhr.statusText)
         }
     });
 
-    return true; //should save the user data to server
+    //return true; //should save the user data to server
 }
 
 // Print taken classes to table
@@ -122,7 +139,7 @@ function addClasses() {
 function removeClass(className) {
     var toRemove = className;
     
-    var index = coenClasses.indexOf(className);
+    /*var index = coenClasses.indexOf(className);
     if (index > -1) {
         coenClasses.splice(index, 1);
     }
@@ -130,13 +147,15 @@ function removeClass(className) {
     index = coreClasses.indexOf(className);
     if (index > -1) {
         coreClasses.splice(index, 1);
-    }
+    }*/
 
     index = takenClasses.indexOf(className);
     if (index > -1) {
         takenClasses.splice(index, 1);
     }
 
+    removeElective(className);
+    removeEnrichment(className);
     //printTakenClasses();
     requirementsCompare();
     printRequirementsFulfilled();
@@ -155,11 +174,11 @@ function addClass(className) {
     }
     
     //add to the appropriate array. TODO: cleanup, consolidate arrays
-    if(str.includes("coen") || str.includes("COEN")) {
+    /*if(str.includes("coen") || str.includes("COEN")) {
         coenClasses.push(str.toUpperCase());
     } else {
         coreClasses.push(str.toUpperCase());
-    }
+    }*/
 
     //should check if a class is actually a class
     takenClasses.push(str.toUpperCase());
@@ -181,6 +200,11 @@ function requirementsCompare() {
     //reset classes
     unfulfilledClasses = [];
     fulfilledClasses = [];
+
+    var checkedFlags = [];
+    for(var i = 0; i < takenClasses.length; i++) {
+        checkedFlags.push(0);
+    }
 
     //check engineering classes
     for(var i = 0; i < engr_classes.length; i++) {
@@ -289,14 +313,92 @@ function printRequirementsNeeded() {
             resString += "<div id=\"" + unfulfilledClasses[i] + "\">" + unfulfilledClasses[i] + "<br></div>";
         }
     }
+    //electives
+    if(electives.length < 3) {
+        resString += "<div id='elective_req'>Electives: " + electives.length + "/3 Classes<br></div>";
+    }
+
+    //educational enrichment
+    if(enrichment.length < 3) {
+        resString += "<div id='enrichment_req'>Enrichment: " + enrichment.length + "/4 Classes<br></div>";
+    }
+
+    //units
+    if(units < 191) {
+        resString += "<div id=\"units\">" + "Units: " + units + "/191" + "<br></div>";
+    }
+    
     document.getElementById("unfulfilled").innerHTML = resString;
+}
+
+function addElective(className) {
+    if(electives.indexOf(className) > -1) { //don't add the same again
+        return;
+    } else {
+        electives.push(className);
+    }
+}
+
+function removeElective(className) {
+    var elIdx = electives.indexOf(className);
+    if(elIdx > -1) {
+        electives.splice(elIdx, 1);
+    }
+}
+
+function addEnrichment(className) {
+    if(enrichment.indexOf(className) > -1) { //don't add the same again
+        return;
+    } else {
+        enrichment.push(className);
+    }
+}
+
+function removeEnrichment(className) {
+    var enIdx = enrichment.indexOf(className);
+    if(enIdx > -1) {
+        enrichment.splice(enIdx, 1);
+    }
+}
+
+function extraReq(val) {
+    var box = document.getElementById(val);
+    var value = box.options[box.selectedIndex].value;
+    var className = val.replace("_box","");
+    if(value == null || value == '' || value == 'empty') { //remove from enrichment,elective
+        removeElective(className);
+        removeEnrichment(className);
+    } else if (value == 'elective') { //add elective
+        removeEnrichment(className)
+        addElective(className);
+    } else if (value == 'enrichment') { //add enrichment
+        removeElective(className);
+        addEnrichment(className);
+    }
+
+    printRequirementsFulfilled();
+    printRequirementsNeeded();
+    save();
 }
 
 function printRequirementsFulfilled() {
     var resString = "";
-    for(var i = 0; i < fulfilledClasses.length; i++) {
-        resString += "<div id=\"" + fulfilledClasses[i].class + "\">" + fulfilledClasses[i].class 
-        + "&nbsp;&nbsp;&nbsp;&nbsp;" + "<input id='" + fulfilledClasses[i].class + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/></div>";
+    for(var i = 0; i < takenClasses.length; i++) {
+        var selectedEl = "";
+        if(electives.indexOf(takenClasses[i]) > -1)
+            selectedEl = "selected";
+
+        var selectedEn = "";
+        if(enrichment.indexOf(takenClasses[i]) > -1)
+            selectedEn = "selected";
+        var selbox = "<select id='" + takenClasses[i] + "_box' name='Elective or Enrichment?' onchange='extraReq(this.id)'>"
+                    + "<option value='empty'></option>" 
+                    + "<option value='elective' " + selectedEl + ">Elective</option>"
+                    + "<option value='enrichment' " + selectedEn + ">Educational Enrichment</option>"
+                    + "<select>";
+        resString += "<div id=\"" + takenClasses[i] + "\">" + takenClasses[i] 
+        + "&nbsp;&nbsp;&nbsp;&nbsp;" + "<input id='" + takenClasses[i] + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/>" 
+        + "&nbsp;&nbsp;&nbsp;&nbsp;" + selbox + "</br></div>";
     }
     document.getElementById("takenCourses").innerHTML = resString;
 }
