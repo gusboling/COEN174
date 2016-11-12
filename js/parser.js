@@ -84,7 +84,7 @@ function save() {
 function printTakenClasses() {
     text = "";
     for(i = 0; i < coenClasses.length; i++) {
-        text += "<div id=\"" + coenClasses[i] + "\">" + coenClasses[i] + "&nbsp;&nbsp;&nbsp;&nbsp;" 
+        text += "<div id=\"" + coenClasses[i] + "\">" + coenClasses[i] + "&nbsp;&nbsp;&nbsp;&nbsp;"
         + " " + "<input id='" + coenClasses[i] + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/><br></div>";
     }
     for(i = 0; i < coreClasses.length; i++) {
@@ -107,14 +107,14 @@ function addClasses() {
     var match = regex.exec(classNames);
     //console.log("matched");
     //console.log(match);
-    
+
     // get every class match
     while (match != null) {
         matches.push(match[0]);
         classNames = classNames.substring(match.index + match[0].length);
         match = regex.exec(classNames);
     }
-    
+
     // DEBUG
     //console.log(match);
     //console.log(matches);
@@ -138,7 +138,7 @@ function addClasses() {
 // Remove a taken class
 function removeClass(className) {
     var toRemove = className;
-    
+
     /*var index = coenClasses.indexOf(className);
     if (index > -1) {
         coenClasses.splice(index, 1);
@@ -166,13 +166,14 @@ function removeClass(className) {
 // Add a single class
 function addClass(className) {
     var str = sanitize(className);
-    
+    console.log(takenClasses.length);
+
     //don't add multiple of the same
     if(takenClasses!=null && arrayIncludes(str, takenClasses)) {
         console.log("already added");
         return;
     }
-    
+
     //add to the appropriate array. TODO: cleanup, consolidate arrays
     /*if(str.includes("coen") || str.includes("COEN")) {
         coenClasses.push(str.toUpperCase());
@@ -327,7 +328,7 @@ function printRequirementsNeeded() {
     if(units < 191) {
         resString += "<div id=\"units\">" + "Units: " + units + "/191" + "<br></div>";
     }
-    
+
     document.getElementById("unfulfilled").innerHTML = resString;
 }
 
@@ -392,12 +393,12 @@ function printRequirementsFulfilled() {
         if(enrichment.indexOf(takenClasses[i]) > -1)
             selectedEn = "selected";
         var selbox = "<select id='" + takenClasses[i] + "_box' name='Elective or Enrichment?' onchange='extraReq(this.id)'>"
-                    + "<option value='empty'></option>" 
+                    + "<option value='empty'></option>"
                     + "<option value='elective' " + selectedEl + ">Elective</option>"
                     + "<option value='enrichment' " + selectedEn + ">Educational Enrichment</option>"
                     + "<select>";
-        resString += "<div id=\"" + takenClasses[i] + "\">" + takenClasses[i] 
-        + "&nbsp;&nbsp;&nbsp;&nbsp;" + "<input id='" + takenClasses[i] + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/>" 
+        resString += "<div id=\"" + takenClasses[i] + "\">" + takenClasses[i]
+        + "&nbsp;&nbsp;&nbsp;&nbsp;" + "<input id='" + takenClasses[i] + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/>"
         + "&nbsp;&nbsp;&nbsp;&nbsp;" + selbox + "</br></div>";
     }
     document.getElementById("takenCourses").innerHTML = resString;
