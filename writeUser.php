@@ -1,8 +1,30 @@
 <?php
   header("Content-Type: application/json");
-  $jsonArray["msg"]=["COEN 10", "COEN 11", "COEN 180"];
+  $jsonArray["status"]=0;
+  $jsonArray["data"]=[];
+  $jsonArray["msg"]="failure - default";
+  $jsonArray["request"]=$_POST;
 
-  /*if(isset($_POST['read'])){ //RESPONSE CASE 1
+  if(isset($_POST['read'])){ //RESPONSE CASE 1
+    $user_key = "";
+
+    if(isset($_POST['user_hash'])){
+      $user_key = $_POST['user_hash'];
+      $read_data = read_cff($user_key);
+      if($read_data != false){
+        $jsonArray["status"]=1;
+        $jsonArray["data"]=$read_data;
+        $jsonArray["msg"]="read success";
+      }
+      else{
+        $jsonArray["status"]=1;
+        $jsonArray["data"]="{}";
+        $jsonArray["msg"]="no results found";
+      }
+    }
+    else{
+      $jsonArray["msg"]="error - no user hash";
+    }
   }
 
   elseif(isset($_POST['write'])){ //RESPONSE CASE 2
@@ -10,12 +32,17 @@
     $user_classes = parse($_POST['data']);
     $write_status = write_ctf($user_key, $user_classes);
     if($write_status){ //Write succeeded
-
+      $jsonArray["status"]=1;
+      $jsonArray["msg"]="success - php write succeeded.";
     }
     else{ //Write failed
-
+      $jsonResponse["msg"]="failure - php unable to write data.";
     }
-  }*/
+  }
+
+  else{
+    $jsonResponse["msg"]="failure - no specified read/write case.";
+  }
 
   $jsonResponse = json_encode($jsonArray);
   echo $jsonResponse;
@@ -65,7 +92,6 @@
       return $file_classes;
     }
     else{
-      echo "Unable to open file for reading! (2)";
       return false;
     }
   }

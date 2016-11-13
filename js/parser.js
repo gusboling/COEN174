@@ -46,14 +46,19 @@ function load() {
     //takenClasses = loadClasses(hash);
     $.ajax({
         url: 'writeUser.php',
-        type: 'post',
-        data: {'user_hash': hash, 'read': 'true'},
+        type: 'POST',
+        data: {'user_hash': hash, 'read': 1},
         dataType: "json",
+        contentType: "application/json",
         success: function(msg) {
-            console.log("Loaded classes");
-            console.log(msg);
+            console.log("[INFO] Recieved 'load' data from server." );
             //takenClasses = $.parseJSON(msg);
-            takenClasses = JSON.parse(JSON.stringify(msg));
+            var response = JSON.parse(JSON.stringify(msg));
+            console.log("[VARV] response.msg => " + response.msg);
+            takenClasses = response.data;
+        },
+        error: function() {
+            console.log("[ERROR] Could not get 'load' data from server.")
         }
     });
     //return true;
@@ -166,7 +171,6 @@ function removeClass(className) {
 // Add a single class
 function addClass(className) {
     var str = sanitize(className);
-    console.log(takenClasses.length);
 
     //don't add multiple of the same
     if(takenClasses!=null && arrayIncludes(str, takenClasses)) {
