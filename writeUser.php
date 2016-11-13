@@ -6,7 +6,18 @@
   //$jsonArray["request.read"]=$_POST['read'];
 
   if(isset($_POST['read'])) { //RESPONSE CASE 1
-    $jsonArray["msg"]="read request logged.";
+    $user_key = $_POST['user_hash'];
+    $read_result = read_cff($user_key);
+    if($read_result){
+      $jsonArray["status"]=1;
+      $jsonArray["data"]=$read_result;
+      $jsonArray["msg"]="success - read returned some data.";
+    }
+    else{ //read failed and/or search for user_key yielded no results.
+      $jsonArray["status"]=1;
+      $jsonArray["msg"] = "success - read returned no data.";
+    }
+
   }
 
   elseif(isset($_POST['write'])) { //RESPONSE CASE 2

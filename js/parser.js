@@ -40,7 +40,7 @@ function load() {
     // grab hashname from cookie
     var hash = loadHash();
     // grab array from php
-    
+
     $.ajax({
         url: 'writeUser.php',
         type: 'post',
@@ -48,12 +48,15 @@ function load() {
         dataType: "json",
         success: function(msg) {
             console.log("[INFO] Recieved 'load' data from server." );
-            //takenClasses = $.parseJSON(msg);
             var response = JSON.parse(JSON.stringify(msg));
             console.log("[VARV] response.msg => " + response.msg);
-            console.log("[VARV] response.data => " + response.data);
-            console.log("[VARV] response.status => " + response.status);
+            //console.log("[VARV] response.data => " + response.data);
+            //console.log("[VARV] response.status => " + response.status);
             takenClasses = response.data;
+            //console.log("[VARV] takenClasses => " + takenClasses);
+            requirementsCompare();
+            printRequirementsFulfilled();
+            printRequirementsNeeded();
         },
         error: function() {
             console.log("[ERROR] Could not get 'load' data from server.")
@@ -124,7 +127,7 @@ function addClasses() {
 
     // add each each class
     for(var idx = 0; idx < matches.length; idx++) {
-        console.log("Adding");
+        console.log("Adding " + matches[idx]);
         addClass(matches[idx]);
     }
 
@@ -177,11 +180,11 @@ function addClass(className) {
     }
 
     //add to the appropriate array. TODO: cleanup, consolidate arrays
-    /*if(str.includes("coen") || str.includes("COEN")) {
+    if(str.includes("coen") || str.includes("COEN")) {
         coenClasses.push(str.toUpperCase());
     } else {
         coreClasses.push(str.toUpperCase());
-    }*/
+    }
 
     //should check if a class is actually a class
     takenClasses.push(str.toUpperCase());
@@ -386,8 +389,10 @@ function extraReq(val) {
 
 function printRequirementsFulfilled() {
     var resString = "";
+    //console.log("[VARV] takenClasses.length => " + takenClasses.length);
     for(var i = 0; i < takenClasses.length; i++) {
         var selectedEl = "";
+        //console.log("[VARV] takenClasses[i] => " + takenClasses[i]);
         if(electives.indexOf(takenClasses[i]) > -1)
             selectedEl = "selected";
 
