@@ -31,10 +31,10 @@ var math_classes = [
    {class:"MATH 12", units:4},
    {class:"MATH 13", units:4},
    {class:"MATH 14", units:4},
-   {class:"CHEM 11", units:4},{class:"CHEM 11L", units:1},
-   {class:"PHYS 31", units:4},{class:"PHYS 31L", units:1},
-   {class:"PHYS 32", units:4},{class:"PHYS 32L", units:1},
-   {class:"PHYS 33", units:4},{class:"PHYS 33L", units:1},
+   {class:"CHEM 11", units:5},
+   {class:"PHYS 31", units:5},
+   {class:"PHYS 32", units:5},
+   {class:"PHYS 33", units:5},
    {class:"AMTH 106", units:4},{class:"MATH 22", units:4},/*both classes fulfill same requirement*/
    {class:"AMTH 108", units:4},{class:"MATH 122", units:4},/*both classes fulfill same requirement*/
    {class:"MATH 53", units:4},{class:"MATH 166", units:4},{class:"AMTH 118", units:4},/*all 3 classes fulfill same requirement*/
