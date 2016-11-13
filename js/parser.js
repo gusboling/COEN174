@@ -46,15 +46,16 @@ function load() {
     //takenClasses = loadClasses(hash);
     $.ajax({
         url: 'writeUser.php',
-        type: 'POST',
-        data: {'user_hash': hash, 'read': 1},
+        type: 'post',
+        data: {'user_hash': hash, 'read': 'true', 'data': []},
         dataType: "json",
-        contentType: "application/json",
         success: function(msg) {
             console.log("[INFO] Recieved 'load' data from server." );
             //takenClasses = $.parseJSON(msg);
             var response = JSON.parse(JSON.stringify(msg));
             console.log("[VARV] response.msg => " + response.msg);
+            console.log("[VARV] response.data => " + response.data);
+            console.log("[VARV] response.status => " + response.status);
             takenClasses = response.data;
         },
         error: function() {
