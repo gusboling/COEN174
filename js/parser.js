@@ -35,25 +35,31 @@ function loadHash(){
     if (parts.length == 2) return parts.pop().split(";").shift();
 };
 
-function loadClasses(hash) {
-    return [];
-};
 
 function load() {
     // grab hashname from cookie
     var hash = loadHash();
     // grab array from php
-    //takenClasses = loadClasses(hash);
+
     $.ajax({
         url: 'writeUser.php',
         type: 'post',
-        data: {'user_hash': hash, 'read': 'true'},
+        data: {'user_hash': hash, 'read': 'true', 'data': []},
         dataType: "json",
         success: function(msg) {
-            console.log("Loaded classes");
-            console.log(msg);
-            //takenClasses = $.parseJSON(msg);
-            takenClasses = JSON.parse(JSON.stringify(msg));
+            console.log("[INFO] Recieved 'load' data from server." );
+            var response = JSON.parse(JSON.stringify(msg));
+            console.log("[VARV] response.msg => " + response.msg);
+            //console.log("[VARV] response.data => " + response.data);
+            //console.log("[VARV] response.status => " + response.status);
+            takenClasses = response.data;
+            //console.log("[VARV] takenClasses => " + takenClasses);
+            requirementsCompare();
+            printRequirementsFulfilled();
+            printRequirementsNeeded();
+        },
+        error: function() {
+            console.log("[ERROR] Could not get 'load' data from server.")
         }
     });
     //return true;
@@ -84,7 +90,7 @@ function save() {
 function printTakenClasses() {
     text = "";
     for(i = 0; i < coenClasses.length; i++) {
-        text += "<div id=\"" + coenClasses[i] + "\">" + coenClasses[i] + "&nbsp;&nbsp;&nbsp;&nbsp;" 
+        text += "<div id=\"" + coenClasses[i] + "\">" + coenClasses[i] + "&nbsp;&nbsp;&nbsp;&nbsp;"
         + " " + "<input id='" + coenClasses[i] + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/><br></div>";
     }
     for(i = 0; i < coreClasses.length; i++) {
@@ -107,21 +113,21 @@ function addClasses() {
     var match = regex.exec(classNames);
     //console.log("matched");
     //console.log(match);
-    
+
     // get every class match
     while (match != null) {
         matches.push(match[0]);
         classNames = classNames.substring(match.index + match[0].length);
         match = regex.exec(classNames);
     }
-    
+
     // DEBUG
     //console.log(match);
     //console.log(matches);
 
     // add each each class
     for(var idx = 0; idx < matches.length; idx++) {
-        console.log("Adding");
+        console.log("Adding " + matches[idx]);
         addClass(matches[idx]);
     }
 
@@ -138,7 +144,7 @@ function addClasses() {
 // Remove a taken class
 function removeClass(className) {
     var toRemove = className;
-    
+
     /*var index = coenClasses.indexOf(className);
     if (index > -1) {
         coenClasses.splice(index, 1);
@@ -166,19 +172,19 @@ function removeClass(className) {
 // Add a single class
 function addClass(className) {
     var str = sanitize(className);
-    
+
     //don't add multiple of the same
     if(takenClasses!=null && arrayIncludes(str, takenClasses)) {
         console.log("already added");
         return;
     }
-    
+
     //add to the appropriate array. TODO: cleanup, consolidate arrays
-    /*if(str.includes("coen") || str.includes("COEN")) {
+    if(str.includes("coen") || str.includes("COEN")) {
         coenClasses.push(str.toUpperCase());
     } else {
         coreClasses.push(str.toUpperCase());
-    }*/
+    }
 
     //should check if a class is actually a class
     takenClasses.push(str.toUpperCase());
@@ -327,7 +333,7 @@ function printRequirementsNeeded() {
     if(units < 191) {
         resString += "<div id=\"units\">" + "Units: " + units + "/191" + "<br></div>";
     }
-    
+
     document.getElementById("unfulfilled").innerHTML = resString;
 }
 
@@ -383,8 +389,10 @@ function extraReq(val) {
 
 function printRequirementsFulfilled() {
     var resString = "";
+    //console.log("[VARV] takenClasses.length => " + takenClasses.length);
     for(var i = 0; i < takenClasses.length; i++) {
         var selectedEl = "";
+        //console.log("[VARV] takenClasses[i] => " + takenClasses[i]);
         if(electives.indexOf(takenClasses[i]) > -1)
             selectedEl = "selected";
 
@@ -392,12 +400,12 @@ function printRequirementsFulfilled() {
         if(enrichment.indexOf(takenClasses[i]) > -1)
             selectedEn = "selected";
         var selbox = "<select id='" + takenClasses[i] + "_box' name='Elective or Enrichment?' onchange='extraReq(this.id)'>"
-                    + "<option value='empty'></option>" 
+                    + "<option value='empty'></option>"
                     + "<option value='elective' " + selectedEl + ">Elective</option>"
                     + "<option value='enrichment' " + selectedEn + ">Educational Enrichment</option>"
                     + "<select>";
-        resString += "<div id=\"" + takenClasses[i] + "\">" + takenClasses[i] 
-        + "&nbsp;&nbsp;&nbsp;&nbsp;" + "<input id='" + takenClasses[i] + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/>" 
+        resString += "<div id=\"" + takenClasses[i] + "\">" + takenClasses[i]
+        + "&nbsp;&nbsp;&nbsp;&nbsp;" + "<input id='" + takenClasses[i] + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/>"
         + "&nbsp;&nbsp;&nbsp;&nbsp;" + selbox + "</br></div>";
     }
     document.getElementById("takenCourses").innerHTML = resString;

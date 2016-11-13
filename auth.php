@@ -76,7 +76,7 @@ displayed.
 
     //RESPONSE CASE 2: Password authentication
     elseif(isset($_POST['password'])){
-      debug_to_console("STATUS: PASSWORD AUTHENTICATION");
+      //debug_to_console("STATUS: PASSWORD AUTHENTICATION");
 
       $input_hash = md5($_POST['password']);
       $correct_hash = $user_array[$_POST['user_key']];
@@ -94,7 +94,7 @@ displayed.
 
     //RESPONSE CASE 3: New user password creation.
     elseif(isset($_POST['new_password'])){
-      debug_to_console("STATUS: PASSWORD CREATION");
+      //debug_to_console("STATUS: PASSWORD CREATION");
       $username_hash = $_POST['user_key']; //username should already be in SHA1 form.
       $password_hash = md5($_POST['new_password']); //password converted to MD5 form.
 
@@ -120,7 +120,7 @@ displayed.
 
 <?php
   //MAIN REQUEST HANDLING SEQUENCE
-  debug_to_console("PHP Running.");
+  //debug_to_console("PHP Running.");
   auth_handler();
 ?>
 </html>
