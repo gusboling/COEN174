@@ -42,7 +42,7 @@ function load() {
     // grab array from php
 
     $.ajax({
-        url: 'writeUser.php',
+        url: 'userData.php',
         type: 'post',
         data: {'user_hash': hash, 'read': 'true', 'data': []},
         dataType: "json",
@@ -71,7 +71,7 @@ function save() {
     hash = loadHash();
     console.log("Saving: " + hash + " - " + jsonString);
     $.ajax({
-        url: 'writeUser.php',
+        url: 'userData.php',
         type: 'post',
         data: {'user_hash': hash, 'write': 'true', 'data': jsonString},
         dataType: "json",
