@@ -1,7 +1,9 @@
 <html>
 <head>
    <style>
-      table, td{ border: 1px solid black; }
+      #borders{ border: 1px solid black; }
+      #borders1{ position: absolute; top:308px; left:450px; border: 1px solid black; }
+      #location{position: absolute; top:250px; left:450px;}
       td{ padding:15px; }
    </style>
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -15,7 +17,7 @@
 
 <br />
 <h4>Update courses</h4>
-<table>
+<table id="borders">
    <tr>
       <td><p>Add Course or Copy and Paste Course History:</p>
       <input type="text" id="singleInput"><input type="submit" value="Add" onclick="addClasses()"></td>
@@ -24,21 +26,26 @@
 
 <br />
 
-<h4>Courses/Requirements not Completed</h4>
-<table bgcolor="red">
-   <tr>
-      <td><p id="unfulfilled"></p>
-      </td>
-   </tr>
-</table>
-
-<br />
-
-<h4>Courses Completed</h4>
-<table bgcolor="green">
-   <tr>
-      <td><p id="takenCourses"></p>
+<table>
+<tr>
+   <td>
+      <h4>Courses/Requirements not Completed</h4>
+      <table bgcolor="red" id="borders">
+         <tr>
+            <td><p id="unfulfilled"></p>
+            </td>
+         </tr>
+      </table>
    </td>
-   </tr>
+   <td>
+      <h4 id="location">Courses Completed</h4>
+      <table bgcolor="green" id="borders1">
+         <tr>
+            <td><p id="takenCourses"></p>
+            </td>
+         </tr>
+      </table>
+   </td>
+</tr>
 </table>
 </html>
