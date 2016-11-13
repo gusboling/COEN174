@@ -35,15 +35,12 @@ function loadHash(){
     if (parts.length == 2) return parts.pop().split(";").shift();
 };
 
-function loadClasses(hash) {
-    return [];
-};
 
 function load() {
     // grab hashname from cookie
     var hash = loadHash();
     // grab array from php
-    //takenClasses = loadClasses(hash);
+    
     $.ajax({
         url: 'writeUser.php',
         type: 'post',
