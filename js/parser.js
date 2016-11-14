@@ -295,19 +295,19 @@ function requirementsCompare() {
     var amth118 = takenClasses.indexOf("AMTH 118");
     if(math53 > -1 || math166 > -1 || amth118 > -1) {
         if(math53 > -1) {
-            fulfilledClasses.push(math_classes[13]);
+            fulfilledClasses.push(math_classes[12]);
             units += 4;
         }
         if(math166 > -1) {
-            fulfilledClasses.push(math_classes[14]);
+            fulfilledClasses.push(math_classes[13]);
             units += 4;
         }
         if(amth118 > -1) {
-            fulfilledClasses.push(math_classes[15]);
+            fulfilledClasses.push(math_classes[14]);
             units += 4;
         }
     } else {
-        unfulfilledClasses.push(math_classes[13]);
+        unfulfilledClasses.push(math_classes[12]);
         //console.log("[VARV] math_classes[16] => " + math_classes[16]);
     }
 
