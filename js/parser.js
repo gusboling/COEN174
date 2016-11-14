@@ -459,7 +459,9 @@ function printRequirementsFulfilled() {
         + "&nbsp;&nbsp;&nbsp;&nbsp;" + "<input id='" + fulfilledClasses[i].class + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/>"
         + "&nbsp;&nbsp;&nbsp;&nbsp;" + "</br></div>";
     }
-    document.getElementById("takenCourses").innerHTML = resString;
+    if(document.getElementById("takenCourses") != null){
+      document.getElementById("takenCourses").innerHTML = resString;
+    }
 }
 
 function printRequirementsUnknown() {
