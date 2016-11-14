@@ -1,6 +1,6 @@
 //stores the engineering classes computer engineers are required to take for graduation
 var engr_classes = [
-   {class:"ENGR 1", units:1},
+   {class:"ENGR 1", units:1},{class:"ENGR 1L", units:1},
    {class:"ELEN 50", units:4},{class:"ELEN 50L", units:1},
    {class:"ELEN 153", units:4},{class:"ELEN 153L", units:1},
    {class:"COEN 10", units:4},{class:"COEN 10L", units:1},
