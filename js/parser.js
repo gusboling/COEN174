@@ -310,7 +310,9 @@ function requirementsCompare() {
         for(var j = 0; j < core_classes[i].classes.length; j++) {
             for(var k = 0; k < takenClasses.length; k++) {
                 if(takenClasses[k] == core_classes[i].classes[j].class) {
-                    fulfilledClasses.push(core_classes[i].classes[j]);
+                    var classes = new newclass(core_classes[i].core + " - " + core_classes[i].classes[j].class,4);
+                    //fulfilledClasses.push(core_classes[i].classes[j]);
+                    fulfilledClasses.push(classes);
                     units += core_classes[i].classes[j].units;
                     flag = true;
                     break;
@@ -325,6 +327,11 @@ function requirementsCompare() {
     checkUnrecognizedClasses();
     console.log("Unrecognized Classes");
     console.log(unrecognizedClasses);
+}
+
+function newclass(classn, units){
+   this.class = classn;
+   this.units = units;
 }
 
 function checkUnrecognizedClasses(){
