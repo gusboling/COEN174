@@ -318,7 +318,7 @@ function requirementsCompare() {
         for(var j = 0; j < core_classes[i].classes.length; j++) {
             for(var k = 0; k < takenClasses.length; k++) {
                 if(takenClasses[k] == core_classes[i].classes[j].class) {
-                    var classes = new newclass(core_classes[i].core + " - " + core_classes[i].classes[j].class,4);
+                    var classes = new newclass(core_classes[i].core,core_classes[i].classes[j].class,core_classes[i].classes[j].units);
                     //fulfilledClasses.push(core_classes[i].classes[j]);
                     fulfilledClasses.push(classes);
                     units += core_classes[i].classes[j].units;
@@ -337,7 +337,8 @@ function requirementsCompare() {
     console.log(unrecognizedClasses);
 }
 
-function newclass(classn, units){
+function newclass(classreq, classn, units){
+   this.classreq = classreq;
    this.class = classn;
    this.units = units;
 }
@@ -451,11 +452,15 @@ function printRequirementsFulfilled() {
     //console.log("[VARV] takenClasses.length => " + takenClasses.length);
     for(var i = 0; i < fulfilledClasses.length; i++) {
         var selectedEl = "";
+        var reqText = "";
         //console.log("[VARV] takenClasses[i] => " + takenClasses[i]);
         console.log(fulfilledClasses);
         if(electives.indexOf(fulfilledClasses[i]) > -1)
             selectedEl = "selected";
 
+        if(fulfilledClasses[i].classreq) {
+            reqText = " " + fulfilledClasses[i].classreq + " : ";
+        }
         //var selectedEn = "";
         //if(enrichment.indexOf(fulfilledClasses[i]) > -1)
         //    selectedEn = "selected";
@@ -464,7 +469,7 @@ function printRequirementsFulfilled() {
         //            + "<option value='elective' " + selectedEl + ">Elective</option>"
         //           + "<option value='enrichment' " + selectedEn + ">Educational Enrichment</option>"
         //            + "<select>";
-        resString += "<div id=\"" + fulfilledClasses[i].class + "\">" + fulfilledClasses[i].class
+        resString += "<div id=\"" + fulfilledClasses[i].class + "\">" + reqText + fulfilledClasses[i].class
         + "&nbsp;&nbsp;&nbsp;&nbsp;" + "<input id='" + fulfilledClasses[i].class + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/>"
         + "&nbsp;&nbsp;&nbsp;&nbsp;" + "</br></div>";
     }
