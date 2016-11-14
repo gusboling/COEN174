@@ -316,7 +316,6 @@ function printRequirementsNeeded() {
     for(var i = 0; i < unfulfilledClasses.length; i++) {
         if(typeof unfulfilledClasses[i] === "undefined"){
             console.log("[INFO] undefined property of object: i => " + i);
-            console.log("[INFO - VARV] unfulfilledClasses[i] => " + unfulfilledClasses[i]);
         } else if (unfulfilledClasses[i].class != null) {
             //console.log("[VARV] unfulfilledClasses[i].class => " + unfulfilledClasses[i].class);
             //console.log("[VARV] i => " + i);
