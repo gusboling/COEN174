@@ -14,7 +14,8 @@ displayed.
     echo "</script>";
   }
   function is_bad_username($username){
-    if((strlen($username) != 7) or (!ctype_digit($username))){
+    $username_len = strlen($username);
+    if(($username_len > 8) or ($username_len < 6) or (!ctype_digit($username))){
       return true;
     }
     return false;
