@@ -175,7 +175,7 @@ function removeClass(className) {
 
     var idx = unrecognizedClasses.indexOf(className);
     if (index > -1) {
-        takenClasses.splice(index, 1);
+        unrecognizedClasses.splice(index, 1);
     }
 
     removeElective(className);
@@ -333,8 +333,8 @@ function requirementsCompare() {
     }
 
     checkUnrecognizedClasses();
-    console.log("Unrecognized Classes");
-    console.log(unrecognizedClasses);
+    //console.log("Unrecognized Classes");
+    //console.log(unrecognizedClasses);
 }
 
 function newclass(classreq, classn, units){
@@ -454,7 +454,7 @@ function printRequirementsFulfilled() {
         var selectedEl = "";
         var reqText = "";
         //console.log("[VARV] takenClasses[i] => " + takenClasses[i]);
-        console.log(fulfilledClasses);
+        //console.log(fulfilledClasses);
         if(electives.indexOf(fulfilledClasses[i]) > -1)
             selectedEl = "selected";
 
