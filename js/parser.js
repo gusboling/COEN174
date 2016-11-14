@@ -312,8 +312,14 @@ function requirementsCompare() {
 
 function printRequirementsNeeded() {
     var resString = "";
+    console.log("[VARV] unfulfilledClasses.length => " + unfulfilledClasses.length);
     for(var i = 0; i < unfulfilledClasses.length; i++) {
-        if (unfulfilledClasses[i].class != null) {
+        if(typeof unfulfilledClasses[i] === "undefined"){
+            console.log("[INFO] undefined property of object: i => " + i);
+            console.log("[INFO - VARV] unfulfilledClasses[i] => " + unfulfilledClasses[i]);
+        } else if (unfulfilledClasses[i].class != null) {
+            //console.log("[VARV] unfulfilledClasses[i].class => " + unfulfilledClasses[i].class);
+            //console.log("[VARV] i => " + i);
             resString += "<div id=\"" + unfulfilledClasses[i].class + "\">" + unfulfilledClasses[i].class + "<br></div>";
         } else {
             resString += "<div id=\"" + unfulfilledClasses[i] + "\">" + unfulfilledClasses[i] + "<br></div>";
