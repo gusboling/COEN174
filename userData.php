@@ -73,7 +73,10 @@
 <?php //File I/O functions
   function read_cff($username_hash){ //Returns an array of class-name strings as read from file.
     $source_file = "data/user_data/" . $username_hash . ".txt";
-    $handle = fopen($source_file, "r") or die("Unable to open file for reading! (1)");
+    $handle=false;
+    if(file_exists($source_file)){
+      $handle=fopen($source_file, "r");
+    }
     if($handle){
       $file_classes = [];
       while (($line = fgets($handle)) !== false) {
@@ -93,7 +96,7 @@
 
   function write_ctf($username_hash, $class_array){ //Appends an array of class-names to file
     $dest_file = "data/user_data/" . $username_hash . ".txt";
-    $handle = fopen($dest_file, "w") or die("Unable to open file for writing! (1)");
+    $handle = fopen($dest_file, "w");
     if($handle){
       for($i = 0; $i < count($class_array); $i++){
         $class_data_line = $class_array[$i] . "\n";
