@@ -8,6 +8,7 @@ var coenClasses = [];
 var coreClasses = [];
 var fulfilledClasses = [];
 var unfulfilledClasses = [];
+var unrecognizedClasses = [];
 var electives = [];
 var enrichment = [];
 var units = 0;
@@ -27,6 +28,7 @@ window.onload = function(){
     requirementsCompare();
     printRequirementsNeeded();
     printRequirementsFulfilled();
+    printRequirementsUnknown();
     printTakenClasses();
 };
 
@@ -58,6 +60,7 @@ function load() {
             requirementsCompare();
             printRequirementsFulfilled();
             printRequirementsNeeded();
+            printRequirementsUnknown();
         },
         error: function() {
             console.log("[ERROR] Could not get 'load' data from server.")
@@ -139,6 +142,7 @@ function addClasses() {
     requirementsCompare();
     printRequirementsFulfilled();
     printRequirementsNeeded();
+    printRequirementsUnknown();
     save();
 }
 
@@ -161,12 +165,18 @@ function removeClass(className) {
         takenClasses.splice(index, 1);
     }
 
+    var idx = unrecognizedClasses.indexOf(className);
+    if (index > -1) {
+        takenClasses.splice(index, 1);
+    }
+
     removeElective(className);
     removeEnrichment(className);
     //printTakenClasses();
     requirementsCompare();
     printRequirementsFulfilled();
     printRequirementsNeeded()
+    printRequirementsUnknown();
     save();
 }
 
@@ -207,6 +217,7 @@ function requirementsCompare() {
     //reset classes
     unfulfilledClasses = [];
     fulfilledClasses = [];
+    units = 0;
 
     var checkedFlags = [];
     for(var i = 0; i < takenClasses.length; i++) {
@@ -310,6 +321,28 @@ function requirementsCompare() {
             unfulfilledClasses.push(core_classes[i].core);
         }
     }
+
+    checkUnrecognizedClasses();
+    console.log("Unrecognized Classes");
+    console.log(unrecognizedClasses);
+}
+
+function checkUnrecognizedClasses(){
+    unrecognizedClasses = [];
+
+    for(var i = 0; i < takenClasses.length; i++){
+        var found = false;
+        for(var j = 0; j < fulfilledClasses.length; j++) {
+            if(fulfilledClasses[j].class == takenClasses[i]) {
+                found = true;
+                console.log("FOUND");
+            }
+        }
+        if(!found) {
+            console.log("NOT FOUND");
+            unrecognizedClasses.push(takenClasses[i]);
+        }
+    }
 }
 
 function printRequirementsNeeded() {
@@ -397,23 +430,48 @@ function extraReq(val) {
 function printRequirementsFulfilled() {
     var resString = "";
     //console.log("[VARV] takenClasses.length => " + takenClasses.length);
-    for(var i = 0; i < takenClasses.length; i++) {
+    for(var i = 0; i < fulfilledClasses.length; i++) {
         var selectedEl = "";
         //console.log("[VARV] takenClasses[i] => " + takenClasses[i]);
-        if(electives.indexOf(takenClasses[i]) > -1)
+        console.log(fulfilledClasses);
+        if(electives.indexOf(fulfilledClasses[i]) > -1)
+            selectedEl = "selected";
+
+        //var selectedEn = "";
+        //if(enrichment.indexOf(fulfilledClasses[i]) > -1)
+        //    selectedEn = "selected";
+        //var selbox = "<select id='" + fulfilledClasses[i] + "_box' name='Elective or Enrichment?' onchange='extraReq(this.id)'>"
+        //            + "<option value='empty'></option>"
+        //            + "<option value='elective' " + selectedEl + ">Elective</option>"
+        //           + "<option value='enrichment' " + selectedEn + ">Educational Enrichment</option>"
+        //            + "<select>";
+        resString += "<div id=\"" + fulfilledClasses[i].class + "\">" + fulfilledClasses[i].class
+        + "&nbsp;&nbsp;&nbsp;&nbsp;" + "<input id='" + fulfilledClasses[i].class + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/>"
+        + "&nbsp;&nbsp;&nbsp;&nbsp;" + "</br></div>";
+    }
+    document.getElementById("takenCourses").innerHTML = resString;
+}
+
+function printRequirementsUnknown() {
+    var resString = "";
+    //console.log("[VARV] takenClasses.length => " + takenClasses.length);
+    for(var i = 0; i < unrecognizedClasses.length; i++) {
+        var selectedEl = "";
+        //console.log("[VARV] takenClasses[i] => " + takenClasses[i]);
+        if(electives.indexOf(unrecognizedClasses[i]) > -1)
             selectedEl = "selected";
 
         var selectedEn = "";
-        if(enrichment.indexOf(takenClasses[i]) > -1)
+        if(enrichment.indexOf(unrecognizedClasses[i]) > -1)
             selectedEn = "selected";
-        var selbox = "<select id='" + takenClasses[i] + "_box' name='Elective or Enrichment?' onchange='extraReq(this.id)'>"
+        var selbox = "<select id='" + unrecognizedClasses[i] + "_box' name='Elective or Enrichment?' onchange='extraReq(this.id)'>"
                     + "<option value='empty'></option>"
                     + "<option value='elective' " + selectedEl + ">Elective</option>"
                     + "<option value='enrichment' " + selectedEn + ">Educational Enrichment</option>"
                     + "<select>";
-        resString += "<div id=\"" + takenClasses[i] + "\">" + takenClasses[i]
-        + "&nbsp;&nbsp;&nbsp;&nbsp;" + "<input id='" + takenClasses[i] + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/>"
+        resString += "<div id=\"" + unrecognizedClasses[i] + "\">" + unrecognizedClasses[i]
+        + "&nbsp;&nbsp;&nbsp;&nbsp;" + "<input id='" + unrecognizedClasses[i] + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/>"
         + "&nbsp;&nbsp;&nbsp;&nbsp;" + selbox + "</br></div>";
     }
-    document.getElementById("takenCourses").innerHTML = resString;
+    document.getElementById("unrecognizedCourses").innerHTML = resString;
 }
