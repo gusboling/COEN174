@@ -266,29 +266,29 @@ function requirementsCompare() {
     var math22 = takenClasses.indexOf("MATH 22");
     if(amth106 > -1 || math22 > -1) {
         if(amth106 > -1) {
-            fulfilledClasses.push(math_classes[9]);
+            fulfilledClasses.push(math_classes[8]);
             units += 4;
         }
         if(math22 > -1) {
-            fulfilledClasses.push(takenClasses[10]);
+            fulfilledClasses.push(math_classes[9]);
             units += 4;
         }
     } else {
-        unfulfilledClasses.push(math_classes[9]);
+        unfulfilledClasses.push(math_classes[8]);
     }
     var amth108 = takenClasses.indexOf("AMTH 108");
     var math122 = takenClasses.indexOf("MATH 122");
     if(amth108 > -1 || math122 > -1) {
         if(amth108 > -1) {
-            fulfilledClasses.push(math_classes[11]);
+            fulfilledClasses.push(math_classes[10]);
             units += 4;
         }
         if(math122 > -1) {
-            fulfilledClasses.push(takenClasses[12]);
+            fulfilledClasses.push(math_classes[11]);
             units += 4;
         }
     } else {
-        unfulfilledClasses.push(math_classes[11]);
+        unfulfilledClasses.push(math_classes[10]);
     }
     var math53 = takenClasses.indexOf("MATH 53");
     var math166 = takenClasses.indexOf("MATH 166");
@@ -299,11 +299,11 @@ function requirementsCompare() {
             units += 4;
         }
         if(math166 > -1) {
-            fulfilledClasses.push(takenClasses[14]);
+            fulfilledClasses.push(math_classes[14]);
             units += 4;
         }
         if(amth118 > -1) {
-            fulfilledClasses.push(takenClasses[15]);
+            fulfilledClasses.push(math_classes[15]);
             units += 4;
         }
     } else {
@@ -341,13 +341,15 @@ function checkUnrecognizedClasses(){
     for(var i = 0; i < takenClasses.length; i++){
         var found = false;
         for(var j = 0; j < fulfilledClasses.length; j++) {
-            if(fulfilledClasses[j].class == takenClasses[i]) {
+            if(fulfilledClasses[j].class == null)
+                continue;
+
+            if(fulfilledClasses[j].class == takenClasses[i]) { //} || fulfilledClasses[j] == takenClasses[i]) {
                 found = true;
-                console.log("FOUND");
+                break;
             }
         }
         if(!found) {
-            console.log("NOT FOUND");
             unrecognizedClasses.push(takenClasses[i]);
         }
     }
@@ -358,8 +360,8 @@ function printRequirementsNeeded() {
     //console.log("[VARV] unfulfilledClasses.length => " + unfulfilledClasses.length);
     for(var i = 0; i < unfulfilledClasses.length; i++) {
         if(typeof unfulfilledClasses[i] === "undefined"){
-            console.log("[INFO] undefined property of object: i => " + i);
-            console.log("[VARV] unfulfilledClasses => " + unfulfilledClasses);
+            //console.log("[INFO] undefined property of object: i => " + i);
+            //console.log("[VARV] unfulfilledClasses => " + unfulfilledClasses);
         } else if (unfulfilledClasses[i].class != null) {
             //console.log("[VARV] i => " + i);
             resString += "<div id=\"" + unfulfilledClasses[i].class + "\">" + unfulfilledClasses[i].class + "<br></div>";
@@ -459,7 +461,10 @@ function printRequirementsFulfilled() {
         + "&nbsp;&nbsp;&nbsp;&nbsp;" + "<input id='" + fulfilledClasses[i].class + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/>"
         + "&nbsp;&nbsp;&nbsp;&nbsp;" + "</br></div>";
     }
-    document.getElementById("takenCourses").innerHTML = resString;
+
+    if(document.getElementById("takenCourses") != null){
+      document.getElementById("takenCourses").innerHTML = resString;
+    }
 }
 
 function printRequirementsUnknown() {
@@ -483,11 +488,7 @@ function printRequirementsUnknown() {
         + "&nbsp;&nbsp;&nbsp;&nbsp;" + "<input id='" + unrecognizedClasses[i] + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/>"
         + "&nbsp;&nbsp;&nbsp;&nbsp;" + selbox + "</br></div>";
     }
-/*<<<<<<< HEAD
-    if(document.getElementById("takenCourses") != null){
-      document.getElementById("takenCourses").innerHTML = resString;
-    }
-=======*/
+
     if(document.getElementById("unrecognizedCourses") != null){
       document.getElementById("unrecognizedCourses").innerHTML = resString;
     }
