@@ -1,3 +1,4 @@
+
 // @file parser.js
 // @author Matthew Koken <mkoken@scu.edu>
 // Functions for parsing, tracking classes and requirements
@@ -49,7 +50,7 @@ function load() {
         success: function(msg) {
             console.log("[INFO] Recieved 'load' data from server." );
             var response = JSON.parse(JSON.stringify(msg));
-            console.log("[VARV] response.msg => " + response.msg);
+            console.log("[INFO] response.msg => " + response.msg);
             //console.log("[VARV] response.data => " + response.data);
             //console.log("[VARV] response.status => " + response.status);
             takenClasses = response.data;
@@ -246,48 +247,49 @@ function requirementsCompare() {
     var math22 = takenClasses.indexOf("MATH 22");
     if(amth106 > -1 || math22 > -1) {
         if(amth106 > -1) {
-            fulfilledClasses.push(math_classes[12]);
+            fulfilledClasses.push(math_classes[9]);
             units += 4;
         }
         if(math22 > -1) {
-            fulfilledClasses.push(takenClasses[13]);
+            fulfilledClasses.push(takenClasses[10]);
             units += 4;
         }
     } else {
-        unfulfilledClasses.push(math_classes[12]);
+        unfulfilledClasses.push(math_classes[9]);
     }
     var amth108 = takenClasses.indexOf("AMTH 108");
     var math122 = takenClasses.indexOf("MATH 122");
     if(amth108 > -1 || math122 > -1) {
         if(amth108 > -1) {
-            fulfilledClasses.push(math_classes[14]);
+            fulfilledClasses.push(math_classes[11]);
             units += 4;
         }
         if(math122 > -1) {
-            fulfilledClasses.push(takenClasses[15]);
+            fulfilledClasses.push(takenClasses[12]);
             units += 4;
         }
     } else {
-        unfulfilledClasses.push(math_classes[14]);
+        unfulfilledClasses.push(math_classes[11]);
     }
     var math53 = takenClasses.indexOf("MATH 53");
     var math166 = takenClasses.indexOf("MATH 166");
     var amth118 = takenClasses.indexOf("AMTH 118");
     if(math53 > -1 || math166 > -1 || amth118 > -1) {
         if(math53 > -1) {
-            fulfilledClasses.push(math_classes[16]);
+            fulfilledClasses.push(math_classes[13]);
             units += 4;
         }
         if(math166 > -1) {
-            fulfilledClasses.push(takenClasses[17]);
+            fulfilledClasses.push(takenClasses[14]);
             units += 4;
         }
         if(amth118 > -1) {
-            fulfilledClasses.push(takenClasses[18]);
+            fulfilledClasses.push(takenClasses[15]);
             units += 4;
         }
     } else {
-        unfulfilledClasses.push(math_classes[16]);
+        unfulfilledClasses.push(math_classes[13]);
+        //console.log("[VARV] math_classes[16] => " + math_classes[16]);
     }
 
 
@@ -312,12 +314,12 @@ function requirementsCompare() {
 
 function printRequirementsNeeded() {
     var resString = "";
-    console.log("[VARV] unfulfilledClasses.length => " + unfulfilledClasses.length);
+    //console.log("[VARV] unfulfilledClasses.length => " + unfulfilledClasses.length);
     for(var i = 0; i < unfulfilledClasses.length; i++) {
         if(typeof unfulfilledClasses[i] === "undefined"){
             console.log("[INFO] undefined property of object: i => " + i);
+            console.log("[VARV] unfulfilledClasses => " + unfulfilledClasses);
         } else if (unfulfilledClasses[i].class != null) {
-            //console.log("[VARV] unfulfilledClasses[i].class => " + unfulfilledClasses[i].class);
             //console.log("[VARV] i => " + i);
             resString += "<div id=\"" + unfulfilledClasses[i].class + "\">" + unfulfilledClasses[i].class + "<br></div>";
         } else {
