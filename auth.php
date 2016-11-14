@@ -7,6 +7,13 @@ users will see a personal dashboard after entering a password. Users
 entering an invalid student ID will be returned to the login, with an error message
 displayed.
 -->
+<head>
+  <script type="text/javascript" src="js/requirements.js" ></script>
+  <script type="text/javascript" src="js/parser.js" ></script>
+  <script type="text/javascript" src="js/utility.js" ></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+</head>
 <?php //PHP helper functions
   function debug_to_console($message){
     echo "<script>";

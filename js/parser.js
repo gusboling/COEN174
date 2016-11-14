@@ -101,7 +101,9 @@ function printTakenClasses() {
         text += "<div id=\"" + coreClasses[i] + "\">" + coreClasses[i] + "&nbsp;&nbsp;&nbsp;&nbsp;"
         + " " + "<input id='" + coreClasses[i] + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/><br></div>";
     }
-    document.getElementById("takenCourses").innerHTML = text;
+    if(document.getElementById("takenCourses") != null){
+      document.getElementById("takenCourses").innerHTML = text;
+    }
     //document.getElementById("allCourses").appendChild(document.createTextNode(text));
     //appendChild(document.createTextNode(unsafe_str));
 };
@@ -109,8 +111,12 @@ function printTakenClasses() {
 // Add multiple classes at once - copy paste from eCampus
 function addClasses() {
     //should sanitize input before handling
-    var classNames = document.getElementById("singleInput").value;
-    //console.log(classNames);
+    if(document.getElementById("singleInput") != null){
+      var classNames = document.getElementById("singleInput").value;
+    }
+
+
+    console.log("[VARV] classNames => " + classNames);
     var matches = [];
     // Match regex for a class: 4 char code + digits (and possibly another char)
     var regex = /\b[a-zA-Z]{4}\s\d{1,3}[A-Z]*\b/;
@@ -136,7 +142,9 @@ function addClasses() {
     }
 
     //clear the input box after submit
-    document.getElementById("singleInput").value="";
+    if(document.getElementById("singleInput") != null){
+      document.getElementById("singleInput").value="";
+    }
 
     //save user data
     requirementsCompare();
@@ -374,7 +382,9 @@ function printRequirementsNeeded() {
         resString += "<div id=\"units\">" + "Units: " + units + "/191" + "<br></div>";
     }
 
-    document.getElementById("unfulfilled").innerHTML = resString;
+    if(document.getElementById("unfulfilled") != null){
+      document.getElementById("unfulfilled").innerHTML = resString;
+    }
 }
 
 function addElective(className) {
@@ -449,7 +459,9 @@ function printRequirementsFulfilled() {
         + "&nbsp;&nbsp;&nbsp;&nbsp;" + "<input id='" + fulfilledClasses[i].class + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/>"
         + "&nbsp;&nbsp;&nbsp;&nbsp;" + "</br></div>";
     }
-    document.getElementById("takenCourses").innerHTML = resString;
+    if(document.getElementById("takenCourses") != null){
+      document.getElementById("takenCourses").innerHTML = resString;
+    }
 }
 
 function printRequirementsUnknown() {
@@ -473,5 +485,13 @@ function printRequirementsUnknown() {
         + "&nbsp;&nbsp;&nbsp;&nbsp;" + "<input id='" + unrecognizedClasses[i] + "' type=\"button\" value=\"Remove\" onclick=\"removeClass(this.id)\"/>"
         + "&nbsp;&nbsp;&nbsp;&nbsp;" + selbox + "</br></div>";
     }
-    document.getElementById("unrecognizedCourses").innerHTML = resString;
+/*<<<<<<< HEAD
+    if(document.getElementById("takenCourses") != null){
+      document.getElementById("takenCourses").innerHTML = resString;
+    }
+=======*/
+    if(document.getElementById("unrecognizedCourses") != null){
+      document.getElementById("unrecognizedCourses").innerHTML = resString;
+    }
+
 }
