@@ -383,7 +383,7 @@ function printRequirementsNeeded() {
     }
 
     //educational enrichment
-    if(enrichment.length < 3) {
+    if(enrichment.length < 4) {
         resString += "<div id='enrichment_req'>Enrichment: " + enrichment.length + "/4 Classes<br></div>";
     }
 
