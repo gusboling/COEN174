@@ -32,6 +32,7 @@ var math_classes = [
    {class:"MATH 13", units:4},
    {class:"MATH 14", units:4},
    {class:"CHEM 11", units:5},
+   {class:"CHEM 11L", units:0},
    {class:"PHYS 31", units:5},
    {class:"PHYS 32", units:5},
    {class:"PHYS 33", units:5},
