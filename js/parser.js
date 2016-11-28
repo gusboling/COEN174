@@ -459,7 +459,7 @@ function printRequirementsFulfilled() {
             selectedEl = "selected";
 
         if(fulfilledClasses[i].classreq) {
-            reqText = " " + fulfilledClasses[i].classreq + " : ";
+            reqText = "<b> " + fulfilledClasses[i].classreq + " : </b>";
         }
         //var selectedEn = "";
         //if(enrichment.indexOf(fulfilledClasses[i]) > -1)
